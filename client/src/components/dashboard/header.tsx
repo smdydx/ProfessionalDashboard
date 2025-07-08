@@ -26,7 +26,10 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
               <Menu className="h-5 w-5" />
             </Button>
           )}
-          <h2 className="text-xl font-semibold text-slate-800">Dashboard Overview</h2>
+          <div>
+            <h2 className="text-xl font-semibold text-slate-800">Dashboard</h2>
+            <p className="text-sm text-slate-600">Home / Dashboard</p>
+          </div>
         </div>
         
         <div className="flex items-center space-x-4">

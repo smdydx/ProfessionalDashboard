@@ -24,6 +24,8 @@ export default function DataTable() {
         return "bg-red-100 text-red-800";
       case "processing":
         return "bg-blue-100 text-blue-800";
+      case "canceled":
+        return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -39,7 +41,7 @@ export default function DataTable() {
     <Card className="border border-slate-200">
       <CardHeader className="p-6 border-b border-slate-200">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-800">Recent Orders</h3>
+          <h3 className="text-lg font-semibold text-slate-800">Latest Orders</h3>
           <div className="flex items-center space-x-3">
             <div className="relative">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
@@ -80,10 +82,10 @@ export default function DataTable() {
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Date
+                  Date Added
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Actions
+                  Action
                 </th>
               </tr>
             </thead>
@@ -131,7 +133,7 @@ export default function DataTable() {
                       {order.productName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                      ${order.amount}
+                      Rs.{order.amount}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Badge className={getStatusColor(order.status)}>

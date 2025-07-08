@@ -5,7 +5,8 @@ import Header from "@/components/dashboard/header";
 import StatsCards from "@/components/dashboard/stats-cards";
 import ChartsSection from "@/components/dashboard/charts-section";
 import DataTable from "@/components/dashboard/data-table";
-import QuickActions from "@/components/dashboard/quick-actions";
+import OrdersStatus from "@/components/dashboard/orders-status";
+import RecentActivity from "@/components/dashboard/recent-activity";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,10 +38,34 @@ export default function Dashboard() {
         <Header onToggleSidebar={toggleSidebar} />
         
         <main className="p-6 space-y-6">
-          <StatsCards />
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-3">
+              <StatsCards />
+            </div>
+            <div className="lg:col-span-1">
+              <OrdersStatus />
+            </div>
+          </div>
+          
           <ChartsSection />
-          <DataTable />
-          <QuickActions />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <DataTable />
+            </div>
+            <div className="lg:col-span-1">
+              <RecentActivity />
+            </div>
+          </div>
+          
+          {/* Footer */}
+          <footer className="mt-8 py-4 border-t border-slate-200 bg-white">
+            <div className="text-center text-sm text-slate-600">
+              OpenCart © 2009-2025 All Rights Reserved.
+              <br />
+              Version 3.0.3.8
+            </div>
+          </footer>
         </main>
       </div>
     </div>

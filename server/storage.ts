@@ -91,23 +91,53 @@ export class MemStorage implements IStorage {
     
     // Add sample orders
     this.createOrder({
-      orderId: "#12345",
-      customerId: 2,
-      customerName: "John Smith",
+      orderId: "256",
+      customerId: 1,
+      customerName: "test test",
       productId: 1,
-      productName: "Laptop Pro",
-      amount: "1299.00",
-      status: "completed"
+      productName: "Test Product",
+      amount: "994.00",
+      status: "processing"
     });
     
     this.createOrder({
-      orderId: "#12346",
+      orderId: "243",
       customerId: 2,
-      customerName: "Jane Doe",
+      customerName: "test yest1",
       productId: 2,
-      productName: "Smartphone",
-      amount: "899.00",
-      status: "pending"
+      productName: "Test Product 2",
+      amount: "187.00",
+      status: "cancelled"
+    });
+    
+    this.createOrder({
+      orderId: "228",
+      customerId: 1,
+      customerName: "Raj Kishore Kumar Kushwaha",
+      productId: 1,
+      productName: "Test Product",
+      amount: "283.00",
+      status: "processing"
+    });
+    
+    this.createOrder({
+      orderId: "227",
+      customerId: 2,
+      customerName: "Deep Raj Raj",
+      productId: 2,
+      productName: "Test Product 2",
+      amount: "442.00",
+      status: "processing"
+    });
+    
+    this.createOrder({
+      orderId: "223",
+      customerId: 1,
+      customerName: "Govinda Kumar",
+      productId: 1,
+      productName: "Test Product",
+      amount: "790.00",
+      status: "processing"
     });
   }
 

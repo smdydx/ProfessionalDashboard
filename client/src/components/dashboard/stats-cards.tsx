@@ -10,37 +10,37 @@ export default function StatsCards() {
 
   const cards = [
     {
-      title: "Total Users",
-      value: stats?.totalUsers || 0,
-      change: "+12.5%",
-      changeType: "positive" as const,
-      icon: Users,
+      title: "Total Orders",
+      value: stats?.totalOrders || 55,
+      change: "0%",
+      changeType: "neutral" as const,
+      icon: ShoppingCart,
       bgColor: "bg-blue-100",
       iconColor: "text-blue-600",
     },
     {
-      title: "Revenue",
-      value: `$${stats?.totalRevenue?.toLocaleString() || "0"}`,
-      change: "+8.2%",
-      changeType: "positive" as const,
+      title: "Total Sales",
+      value: `Rs.${stats?.totalRevenue?.toLocaleString() || "52.6K"}`,
+      change: "0%",
+      changeType: "neutral" as const,
       icon: DollarSign,
       bgColor: "bg-green-100",
       iconColor: "text-green-600",
     },
     {
-      title: "Orders",
-      value: stats?.totalOrders || 0,
-      change: "-3.1%",
-      changeType: "negative" as const,
-      icon: ShoppingCart,
+      title: "Total Customers",
+      value: stats?.totalUsers || 351,
+      change: "0%",
+      changeType: "neutral" as const,
+      icon: Users,
       bgColor: "bg-purple-100",
       iconColor: "text-purple-600",
     },
     {
-      title: "Growth",
-      value: `${stats?.growthRate || 0}%`,
-      change: "+5.4%",
-      changeType: "positive" as const,
+      title: "People Online",
+      value: 0,
+      change: "",
+      changeType: "neutral" as const,
       icon: TrendingUp,
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
@@ -73,7 +73,7 @@ export default function StatsCards() {
       {cards.map((card) => {
         const Icon = card.icon;
         const ChangeIcon = card.changeType === "positive" ? ArrowUp : ArrowDown;
-        const changeColor = card.changeType === "positive" ? "text-green-600" : "text-red-600";
+        const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
         
         return (
           <Card key={card.title} className="border border-slate-200">
@@ -82,10 +82,13 @@ export default function StatsCards() {
                 <div>
                   <p className="text-sm font-medium text-slate-600">{card.title}</p>
                   <p className="text-2xl font-bold text-slate-800">{card.value}</p>
-                  <p className={`text-sm flex items-center mt-1 ${changeColor}`}>
-                    <ChangeIcon className="w-3 h-3 mr-1" />
-                    <span>{card.change}</span>
-                  </p>
+                  {card.change && (
+                    <p className={`text-sm flex items-center mt-1 ${changeColor}`}>
+                      <ChangeIcon className="w-3 h-3 mr-1" />
+                      <span>{card.change}</span>
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-500 mt-1">View more...</p>
                 </div>
                 <div className={`w-12 h-12 ${card.bgColor} rounded-lg flex items-center justify-center`}>
                   <Icon className={`w-6 h-6 ${card.iconColor}`} />
