@@ -7,7 +7,7 @@ import ChartsSection from "@/components/dashboard/charts-section";
 import DataTable from "@/components/dashboard/data-table";
 import OrdersStatus from "@/components/dashboard/orders-status";
 import RecentActivity from "@/components/dashboard/recent-activity";
-import WorldMap from "@/components/dashboard/world-map";
+
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -49,10 +49,6 @@ export default function Dashboard() {
           </div>
           
           <ChartsSection />
-          
-          <div className="grid grid-cols-1 xl:grid-cols-1 gap-4 sm:gap-6">
-            <WorldMap />
-          </div>
           
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
             <div className="xl:col-span-2 order-2 xl:order-1">
