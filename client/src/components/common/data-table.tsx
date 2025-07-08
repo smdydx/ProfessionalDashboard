@@ -93,9 +93,9 @@ export function DataTable({
   }
 
   return (
-    <div className="w-full section-spacing fade-in-custom">
+    <div className="w-full space-enterprise fade-in-enterprise">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 glass-card rounded-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 enterprise-card padding-enterprise-compact">
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -127,17 +127,17 @@ export function DataTable({
       </div>
 
       {/* Table Section */}
-      <div className="glass-card gradient-card shadow-professional overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-gray-50">
+      <div className="enterprise-card overflow-hidden">
+        <Table className="enterprise-table">
+          <TableHeader className="enterprise-table-header">
+            <TableRow>
               {columns.map((column) => (
-                <TableHead key={column.key} className="font-semibold text-gray-700">
+                <TableHead key={column.key} className="enterprise-table-header-cell">
                   {column.header}
                 </TableHead>
               ))}
               {showActions && (
-                <TableHead className="text-right font-semibold text-gray-700">
+                <TableHead className="enterprise-table-header-cell text-right">
                   Actions
                 </TableHead>
               )}
@@ -146,9 +146,9 @@ export function DataTable({
           <TableBody>
             {paginatedData.length > 0 ? (
               paginatedData.map((item, index) => (
-                <TableRow key={item.id || index} className="hover:bg-gray-50">
+                <TableRow key={item.id || index} className="enterprise-table-row">
                   {columns.map((column) => (
-                    <TableCell key={column.key} className="py-3">
+                    <TableCell key={column.key} className="enterprise-table-cell">
                       {renderCell(item, column)}
                     </TableCell>
                   ))}

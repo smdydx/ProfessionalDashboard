@@ -69,38 +69,31 @@ export default function StatsCards() {
   }
 
   return (
-    <div className="dashboard-grid">
+    <div className="grid-enterprise-stats">
       {cards.map((card) => {
         const Icon = card.icon;
         const ChangeIcon = card.changeType === "positive" ? ArrowUp : ArrowDown;
         const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
         
         return (
-          <Card key={card.title} className="glass-card gradient-card shadow-hover">
-            <CardContent className="card-spacing">
+          <Card key={card.title} className="enterprise-card-elevated">
+            <CardContent className="padding-enterprise-compact">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-muted">{card.title}</p>
-                  <p className="heading-secondary mt-1">{card.value}</p>
-                  <div className={`flex items-center text-xs sm:text-sm mt-2 ${changeColor} font-medium`}>
-                    <ChangeIcon className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                  <p className="text-enterprise-caption">{card.title}</p>
+                  <p className="text-enterprise-heading mt-1">{card.value}</p>
+                  <div className={`flex items-center text-sm mt-2 ${changeColor} font-medium`}>
+                    <ChangeIcon className="w-4 h-4 mr-1" />
                     {card.change}
                   </div>
                 </div>
                 <div className={`
-                  p-3 sm:p-4 rounded-xl 
+                  w-12 h-12 rounded-lg 
                   bg-gradient-to-r ${card.bgGradient}
                   flex items-center justify-center
-                  backdrop-blur-sm border border-white/30 dark:border-slate-600/30
-                  shadow-lg hover:shadow-xl transition-all duration-300
-                  hover:scale-110 transform cursor-pointer
-                  glass-card
+                  transition-all duration-200
                 `}>
-                  <Icon className={`
-                    w-6 h-6 sm:w-7 sm:h-7 
-                    bg-gradient-to-r ${card.gradient} 
-                    bg-clip-text text-transparent font-bold
-                  `} />
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
             </CardContent>
