@@ -17,7 +17,7 @@ interface HeaderProps {
   onToggleSidebar: () => void;
 }
 
-export default function Header() {
+export default function Header({ onToggleSidebar }: HeaderProps) {
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -26,8 +26,14 @@ export default function Header() {
       <div className="container flex h-14 md:h-16 items-center justify-between px-2 md:px-4 max-w-full">
         <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
           {isMobile && (
-            <Button variant="ghost" size="icon" className="md:hidden h-8 w-8">
-              <Menu className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggleSidebar}
+              className="md:hidden bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 transition-all duration-200 active:scale-95 touch-manipulation"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
+            >
+              <Menu className="h-6 w-6" />
             </Button>
           )}
           <div className="relative max-w-[200px] md:max-w-sm flex-1">

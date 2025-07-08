@@ -451,16 +451,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         />
       )}
 
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={onClose}
-        className="md:hidden fixed top-4 left-4 z-[60] bg-green-600/20 hover:bg-green-600/30 text-white backdrop-blur-sm border border-white/10 transition-all duration-200 active:scale-95 touch-manipulation"
-        style={{ WebkitTapHighlightColor: 'transparent' }}
-      >
-        <Menu className="h-6 w-6" />
-      </Button>
-      
       <div 
         id="sidebar"
         className={cn(
