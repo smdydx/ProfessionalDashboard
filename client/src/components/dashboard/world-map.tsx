@@ -1,111 +1,61 @@
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import React from "react";
+import WorldMap from "react-svg-worldmap";
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@3.0.0/countries-50m.json";
-
-// Sample data points for demonstration
-const markers = [
-  { markerOffset: -15, name: "New York", coordinates: [-74.006, 40.7128] as [number, number], value: 1250 },
-  { markerOffset: -15, name: "London", coordinates: [-0.1278, 51.5074] as [number, number], value: 980 },
-  { markerOffset: -15, name: "Tokyo", coordinates: [139.6917, 35.6895] as [number, number], value: 1500 },
-  { markerOffset: -15, name: "Sydney", coordinates: [151.2093, -33.8688] as [number, number], value: 750 },
-  { markerOffset: -15, name: "Mumbai", coordinates: [72.8777, 19.0760] as [number, number], value: 920 },
-  { markerOffset: -15, name: "São Paulo", coordinates: [-46.6333, -23.5505] as [number, number], value: 680 },
+// Sample data for different countries
+const data = [
+  { country: "us", value: 2340 }, // USA
+  { country: "gb", value: 1850 }, // UK  
+  { country: "in", value: 3120 }, // India
+  { country: "de", value: 1200 }, // Germany
+  { country: "fr", value: 980 },  // France
+  { country: "jp", value: 1500 }, // Japan
+  { country: "br", value: 890 },  // Brazil
+  { country: "au", value: 750 },  // Australia
+  { country: "ca", value: 1100 }, // Canada
+  { country: "mx", value: 650 },  // Mexico
 ];
 
-export default function WorldMap() {
+export default function WorldMapComponent() {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
       <div className="mb-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">Global Activity Map</h3>
-        <p className="text-gray-600">Real-time user activity across continents</p>
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">Global Orders Map</h3>
+        <p className="text-gray-600">Order distribution across different countries</p>
       </div>
-      
-      <div className="w-full h-96 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-        <ComposableMap
-          projection="geoMercator"
-          projectionConfig={{
-            scale: 130,
-            center: [0, 0]
+
+      <div className="w-full h-96 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden p-4">
+        <WorldMap
+          color="blue"
+          title="Orders by Country"
+          value-suffix="orders"
+          size="responsive"
+          data={data}
+          styleFunction={(context) => {
+            const opacityLevel = context.countryValue 
+              ? 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
+              : 0.1;
+            return {
+              fill: context.countryValue ? "#3b82f6" : "#e5e7eb",
+              fillOpacity: opacityLevel,
+              stroke: "#ffffff",
+              strokeWidth: 1,
+              strokeOpacity: 0.8,
+              cursor: "pointer"
+            };
           }}
-          width={800}
-          height={400}
-          className="w-full h-full"
-        >
-          <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill="#93c5fd"
-                  stroke="#ffffff"
-                  strokeWidth={0.8}
-                  className="hover:fill-blue-400 transition-colors duration-200"
-                />
-              ))
-            }
-          </Geographies>
-          
-          {markers.map(({ name, coordinates, value }, index) => (
-            <Marker key={name} coordinates={coordinates}>
-              {/* Ripple effect */}
-              <circle 
-                r={12} 
-                fill="none"
-                stroke="#ef4444"
-                strokeWidth={1.5}
-                opacity={0.6}
-                className="animate-ping"
-                style={{ animationDelay: `${index * 0.5}s` }}
-              />
-              {/* Main city marker */}
-              <circle 
-                r={5} 
-                fill="#dc2626" 
-                stroke="#ffffff"
-                strokeWidth={2}
-              />
-              {/* Inner dot */}
-              <circle 
-                r={2} 
-                fill="#ffffff"
-                opacity={0.9}
-              />
-              <text
-                textAnchor="middle"
-                y={-10}
-                className="text-xs font-semibold fill-gray-800"
-                style={{ 
-                  fontSize: "10px"
-                }}
-              >
-                {name}
-              </text>
-              <text
-                textAnchor="middle"
-                y={20}
-                className="text-xs fill-gray-600 font-medium"
-                style={{ 
-                  fontSize: "8px"
-                }}
-              >
-                {value} users
-              </text>
-            </Marker>
-          ))}
-        </ComposableMap>
+        />
       </div>
-      
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
-        {markers.map((marker, index) => (
-          <div key={marker.name} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
+        {data.map((item, index) => (
+          <div key={item.country} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
             <div className="relative">
-              <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-              <div className="absolute inset-0 w-4 h-4 bg-red-500 rounded-full animate-pulse opacity-60"></div>
+              <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+              <div className="absolute inset-0 w-4 h-4 bg-blue-500 rounded-full animate-pulse opacity-60"></div>
             </div>
             <div>
-              <span className="text-sm font-semibold text-gray-800">{marker.name}</span>
-              <p className="text-xs text-gray-600">{marker.value} online</p>
+              <span className="text-sm font-semibold text-gray-800 uppercase">{item.country}</span>
+              <p className="text-xs text-gray-600">{item.value} orders</p>
             </div>
           </div>
         ))}
