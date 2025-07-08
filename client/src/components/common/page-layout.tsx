@@ -26,7 +26,7 @@ export function PageLayout({
   breadcrumb = [],
 }: PageLayoutProps) {
   return (
-    <div className="flex-1 space-y-4 sm:space-y-6 p-3 sm:p-4 lg:p-6">
+    <div className="flex-1 section-spacing fade-in-custom card-spacing">
       <div className="space-y-3 sm:space-y-4">
         {/* Breadcrumbs */}
         {breadcrumb.length > 0 && (

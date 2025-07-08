@@ -454,7 +454,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div 
         id="sidebar"
         className={cn(
-          "fixed left-0 top-0 h-full w-64 gradient-sidebar shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto",
+          "fixed left-0 top-0 h-full w-64 sidebar-gradient bg-slate-800 dark:bg-slate-900 shadow-professional transform transition-all duration-300 ease-in-out z-50 overflow-y-auto backdrop-blur-sm border-r border-slate-700/50",
           isMobile && !isOpen && "-translate-x-full",
           !isMobile && "translate-x-0"
         )}

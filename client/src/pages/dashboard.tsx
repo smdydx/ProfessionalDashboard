@@ -23,21 +23,21 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Mobile sidebar overlay */}
       {sidebarOpen && isMobile && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-all duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
       
-      <div className="lg:ml-64">
+      <div className="lg:ml-64 transition-all duration-300">
         <Header onToggleSidebar={toggleSidebar} />
         
-        <main className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
+        <main className="p-3 sm:p-4 lg:p-6 section-spacing fade-in-custom">
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
             <div className="xl:col-span-4">
               <StatsCards />

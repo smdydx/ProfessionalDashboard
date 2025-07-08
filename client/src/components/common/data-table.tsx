@@ -93,9 +93,9 @@ export function DataTable({
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full section-spacing fade-in-custom">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 glass-card rounded-lg">
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -127,7 +127,7 @@ export function DataTable({
       </div>
 
       {/* Table Section */}
-      <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
+      <div className="glass-card gradient-card shadow-professional overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="bg-gray-50">

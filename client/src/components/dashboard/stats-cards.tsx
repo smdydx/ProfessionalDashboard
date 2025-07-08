@@ -69,29 +69,38 @@ export default function StatsCards() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div className="dashboard-grid">
       {cards.map((card) => {
         const Icon = card.icon;
         const ChangeIcon = card.changeType === "positive" ? ArrowUp : ArrowDown;
         const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
         
         return (
-          <Card key={card.title} className="glass-card">
-            <CardContent className="p-4 sm:p-6">
+          <Card key={card.title} className="glass-card gradient-card shadow-hover">
+            <CardContent className="card-spacing">
               <div className="flex items-center justify-between">
-                <div className="min-w-0 flex-1 mr-3">
-                  <p className="text-xs sm:text-sm font-medium text-white/70 truncate">{card.title}</p>
-                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">{card.value}</p>
-                  {card.change && (
-                    <p className={`text-xs sm:text-sm flex items-center mt-1 ${changeColor}`}>
-                      <ChangeIcon className="w-3 h-3 mr-1 flex-shrink-0" />
-                      <span>{card.change}</span>
-                    </p>
-                  )}
-                  <p className="text-xs text-white/50 mt-1 hover:text-white/80 cursor-pointer transition-colors hidden sm:block">View more...</p>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted">{card.title}</p>
+                  <p className="heading-secondary mt-1">{card.value}</p>
+                  <div className={`flex items-center text-xs sm:text-sm mt-2 ${changeColor} font-medium`}>
+                    <ChangeIcon className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    {card.change}
+                  </div>
                 </div>
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${card.gradient} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <div className={`
+                  p-3 sm:p-4 rounded-xl 
+                  bg-gradient-to-r ${card.bgGradient}
+                  flex items-center justify-center
+                  backdrop-blur-sm border border-white/30 dark:border-slate-600/30
+                  shadow-lg hover:shadow-xl transition-all duration-300
+                  hover:scale-110 transform cursor-pointer
+                  glass-card
+                `}>
+                  <Icon className={`
+                    w-6 h-6 sm:w-7 sm:h-7 
+                    bg-gradient-to-r ${card.gradient} 
+                    bg-clip-text text-transparent font-bold
+                  `} />
                 </div>
               </div>
             </CardContent>
