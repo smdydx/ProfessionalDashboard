@@ -9,9 +9,13 @@ import Dashboard from "@/pages/dashboard";
 // Catalog Pages
 import Products from "@/pages/catalog/products";
 import Categories from "@/pages/catalog/categories";
+import Manufacturers from "@/pages/catalog/manufacturers";
+import ProductImport from "@/pages/catalog/product-import";
 
 // Sales Pages
 import Orders from "@/pages/sales/orders";
+import Returns from "@/pages/sales/returns";
+import Coupons from "@/pages/sales/coupons";
 
 // Customer Pages
 import Customers from "@/pages/customers/customers";
@@ -25,6 +29,7 @@ import Reports from "@/pages/reports/reports";
 
 // Extensions Pages
 import Extensions from "@/pages/extensions/extensions";
+import Modifications from "@/pages/extensions/modifications";
 
 // Marketing Pages
 import Marketing from "@/pages/marketing/marketing";
@@ -45,15 +50,20 @@ function Router() {
       {/* Catalog Routes */}
       <Route path="/catalog/products" component={Products} />
       <Route path="/catalog/categories" component={Categories} />
+      <Route path="/catalog/manufacturers" component={Manufacturers} />
+      <Route path="/catalog/product-import" component={ProductImport} />
       
       {/* Sales Routes */}
       <Route path="/sales/orders" component={Orders} />
+      <Route path="/sales/returns" component={Returns} />
+      <Route path="/sales/coupons" component={Coupons} />
       
       {/* Customer Routes */}
       <Route path="/customers/customers" component={Customers} />
       
       {/* Extensions Routes */}
       <Route path="/extensions/extensions" component={Extensions} />
+      <Route path="/extensions/modifications" component={Modifications} />
       
       {/* Design Routes */}
       <Route path="/design/layouts" component={Layouts} />
