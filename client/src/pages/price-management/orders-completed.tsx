@@ -1,5 +1,5 @@
 
-import { PageLayout } from "@/components/common/page-layout";
+import PageLayout from "@/components/common/page-layout";
 import DataTable from "@/components/common/data-table";
 import { Badge } from "@/components/ui/badge";
 
