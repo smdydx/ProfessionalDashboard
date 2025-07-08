@@ -17,7 +17,7 @@ interface PageLayoutProps {
   stats?: Array<{ label: string; value: string | number; variant?: "default" | "secondary" | "destructive" }>;
 }
 
-export default function PageLayout({
+export function PageLayout({
   title,
   description,
   children,
@@ -108,3 +108,5 @@ export default function PageLayout({
     </div>
   );
 }
+
+export default PageLayout;
