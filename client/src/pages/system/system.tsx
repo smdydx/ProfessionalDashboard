@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import PageLayout from "@/components/common/page-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +9,6 @@ import {
   Database, 
   HardDrive, 
   Cpu, 
-  Memory, 
   Globe, 
   Shield,
   AlertTriangle,
@@ -26,8 +24,7 @@ export default function SystemPage() {
     mysqlVersion: "8.0.25",
     serverSoftware: "Apache/2.4.41",
     diskSpace: "75%",
-    memoryUsage: "45%",
-    cpuUsage: "23%"
+    memoryUsage: "45%"
   };
 
   const systemChecks = [
@@ -152,7 +149,7 @@ export default function SystemPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
-                <Memory className="h-4 w-4 text-muted-foreground" />
+                <HardDrive className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{systemInfo.memoryUsage}</div>
