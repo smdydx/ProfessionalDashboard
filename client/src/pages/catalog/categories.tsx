@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PageLayout } from "@/components/common/page-layout";
@@ -9,12 +10,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Folder, Image } from "lucide-react";
+import { FolderOpen, Package, TrendingUp, Users } from "lucide-react";
 
 const categorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
@@ -22,28 +23,83 @@ const categorySchema = z.object({
   parentId: z.string().optional(),
   status: z.enum(["active", "inactive"]),
   sortOrder: z.number().min(0, "Sort order must be positive"),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
 });
 
 type CategoryFormData = z.infer<typeof categorySchema>;
 
+const mockCategories = [
+  {
+    id: 1,
+    name: "Electronics",
+    description: "Electronic devices and gadgets",
+    parentId: null,
+    status: "active",
+    sortOrder: 1,
+    products: 156,
+    subcategories: 8,
+    metaTitle: "Electronics - Best Deals",
+    metaDescription: "Find the latest electronics and gadgets at best prices",
+  },
+  {
+    id: 2,
+    name: "Smartphones",
+    description: "Mobile phones and accessories",
+    parentId: 1,
+    status: "active",
+    sortOrder: 1,
+    products: 45,
+    subcategories: 3,
+    metaTitle: "Smartphones - Latest Models",
+    metaDescription: "Shop latest smartphones from top brands",
+  },
+  {
+    id: 3,
+    name: "Laptops",
+    description: "Laptops and computers",
+    parentId: 1,
+    status: "active",
+    sortOrder: 2,
+    products: 32,
+    subcategories: 2,
+    metaTitle: "Laptops - High Performance",
+    metaDescription: "Browse high-performance laptops for work and gaming",
+  },
+  {
+    id: 4,
+    name: "Clothing",
+    description: "Fashion and apparel",
+    parentId: null,
+    status: "active",
+    sortOrder: 2,
+    products: 234,
+    subcategories: 12,
+    metaTitle: "Clothing - Fashion Store",
+    metaDescription: "Latest fashion trends and clothing collections",
+  },
+  {
+    id: 5,
+    name: "Books",
+    description: "Books and literature",
+    parentId: null,
+    status: "inactive",
+    sortOrder: 3,
+    products: 89,
+    subcategories: 5,
+    metaTitle: "Books - Online Library",
+    metaDescription: "Explore vast collection of books and literature",
+  },
+];
+
 export default function Categories() {
-  const [searchValue, setSearchValue] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Mock data for categories
-  const mockCategories = [
-    { id: 1, name: "Electronics", description: "Electronic items", parentId: null, status: "active", sortOrder: 1, productsCount: 45 },
-    { id: 2, name: "Smartphones", description: "Mobile phones", parentId: 1, status: "active", sortOrder: 1, productsCount: 23 },
-    { id: 3, name: "Laptops", description: "Laptop computers", parentId: 1, status: "active", sortOrder: 2, productsCount: 12 },
-    { id: 4, name: "Clothing", description: "Fashion items", parentId: null, status: "active", sortOrder: 2, productsCount: 67 },
-    { id: 5, name: "Men's Wear", description: "Men's clothing", parentId: 4, status: "active", sortOrder: 1, productsCount: 34 },
-    { id: 6, name: "Women's Wear", description: "Women's clothing", parentId: 4, status: "active", sortOrder: 2, productsCount: 33 },
-  ];
-
-  const { data: categories = mockCategories, isLoading = false } = useQuery({
+  const { data: categories = mockCategories, isLoading } = useQuery({
     queryKey: ["/api/categories"],
     queryFn: () => Promise.resolve(mockCategories),
   });
@@ -55,14 +111,15 @@ export default function Categories() {
       description: "",
       parentId: "",
       status: "active",
-      sortOrder: 0,
+      sortOrder: 1,
+      metaTitle: "",
+      metaDescription: "",
     },
   });
 
   const createMutation = useMutation({
     mutationFn: (data: CategoryFormData) => {
-      // Mock API call
-      return Promise.resolve({ id: Date.now(), ...data });
+      return Promise.resolve({ ...data, id: Date.now() });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
@@ -76,9 +133,8 @@ export default function Categories() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: CategoryFormData }) => {
-      // Mock API call
-      return Promise.resolve({ id, ...data });
+    mutationFn: ({ id, data }: { id: number; data: Partial<CategoryFormData> }) => {
+      return Promise.resolve({ ...data, id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
@@ -94,8 +150,7 @@ export default function Categories() {
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => {
-      // Mock API call
-      return Promise.resolve();
+      return Promise.resolve(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
@@ -106,40 +161,53 @@ export default function Categories() {
     },
   });
 
-  const filteredCategories = categories?.filter((category: any) =>
-    category.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
-    category.description?.toLowerCase().includes(searchValue.toLowerCase())
-  ) || [];
-
-  const getParentCategoryName = (parentId: number | null) => {
-    if (!parentId) return "-";
-    const parent = categories.find(cat => cat.id === parentId);
-    return parent?.name || "-";
-  };
-
   const columns = [
     {
-      key: "image",
-      header: "Image",
-      render: () => (
-        <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-          <Image className="w-6 h-6 text-gray-400" />
+      key: "name",
+      header: "Category Name",
+      render: (value: string, item: any) => (
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+            <FolderOpen className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="font-medium text-gray-900">{value}</p>
+            {item.parentId && (
+              <p className="text-sm text-gray-500">
+                Parent: {categories.find(c => c.id === item.parentId)?.name || "Unknown"}
+              </p>
+            )}
+          </div>
         </div>
       ),
     },
-    { key: "name", header: "Category Name" },
-    { key: "description", header: "Description" },
     {
-      key: "parentId",
-      header: "Parent Category",
-      render: (value: number | null) => getParentCategoryName(value),
+      key: "description",
+      header: "Description",
+      render: (value: string) => (
+        <p className="text-gray-600 max-w-xs truncate">{value || "No description"}</p>
+      ),
     },
     {
-      key: "productsCount",
+      key: "products",
       header: "Products",
-      render: (value: number) => <Badge variant="outline">{value}</Badge>,
+      render: (value: number) => (
+        <div className="flex items-center gap-1">
+          <Package className="w-4 h-4 text-blue-500" />
+          <span className="font-medium">{value}</span>
+        </div>
+      ),
     },
-    { key: "sortOrder", header: "Sort Order" },
+    {
+      key: "subcategories",
+      header: "Subcategories",
+      render: (value: number) => (
+        <div className="flex items-center gap-1">
+          <Users className="w-4 h-4 text-purple-500" />
+          <span className="font-medium">{value}</span>
+        </div>
+      ),
+    },
     {
       key: "status",
       header: "Status",
@@ -147,6 +215,13 @@ export default function Categories() {
         <Badge variant={value === "active" ? "default" : "secondary"}>
           {value}
         </Badge>
+      ),
+    },
+    {
+      key: "sortOrder",
+      header: "Sort Order",
+      render: (value: number) => (
+        <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{value}</span>
       ),
     },
   ];
@@ -162,11 +237,13 @@ export default function Categories() {
   const handleEdit = (category: any) => {
     setEditingCategory(category);
     form.reset({
-      name: category.name || "",
+      name: category.name,
       description: category.description || "",
       parentId: category.parentId?.toString() || "",
-      status: category.status || "active",
-      sortOrder: category.sortOrder || 0,
+      status: category.status,
+      sortOrder: category.sortOrder,
+      metaTitle: category.metaTitle || "",
+      metaDescription: category.metaDescription || "",
     });
     setIsDialogOpen(true);
   };
@@ -177,95 +254,109 @@ export default function Categories() {
     }
   };
 
+  const handleView = (category: any) => {
+    setSelectedCategory(category);
+  };
+
   const handleAdd = () => {
     setEditingCategory(null);
     form.reset();
     setIsDialogOpen(true);
   };
 
+  const stats = [
+    { label: "Total Categories", value: categories.length },
+    { label: "Active Categories", value: categories.filter(c => c.status === "active").length },
+    { label: "Total Products", value: categories.reduce((sum, c) => sum + c.products, 0) },
+    { label: "Subcategories", value: categories.filter(c => c.parentId).length },
+  ];
+
+  const parentCategories = categories.filter(c => !c.parentId);
+
   return (
     <PageLayout
       title="Categories"
-      description="Manage product categories"
+      description="Manage your product categories and hierarchy"
       onAdd={handleAdd}
       addButtonText="Add Category"
-      searchValue={searchValue}
-      onSearchChange={setSearchValue}
-      isLoading={isLoading}
+      breadcrumb={[
+        { label: "Catalog", href: "/catalog" },
+        { label: "Categories" },
+      ]}
+      stats={stats}
     >
-      <DataTable
-        data={filteredCategories}
-        columns={columns}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        isLoading={isLoading}
-      />
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FolderOpen className="w-5 h-5" />
+            Category Management
+          </CardTitle>
+          <CardDescription>
+            Organize your products into categories and subcategories
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DataTable
+            data={categories}
+            columns={columns}
+            onAdd={handleAdd}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onView={handleView}
+            isLoading={isLoading}
+            searchKey="name"
+            title="Categories"
+          />
+        </CardContent>
+      </Card>
 
+      {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Folder className="w-5 h-5" />
+              <FolderOpen className="w-5 h-5" />
               {editingCategory ? "Edit Category" : "Add New Category"}
             </DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter category name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Parent Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select parent category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="">None (Root Category)</SelectItem>
-                        {categories?.filter(cat => cat.parentId === null).map((category: any) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="sortOrder"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Sort Order</FormLabel>
+                      <FormLabel>Category Name</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="0"
-                          {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
-                        />
+                        <Input placeholder="Enter category name" {...field} />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="parentId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Parent Category</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select parent category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="">No Parent (Root Category)</SelectItem>
+                          {parentCategories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -292,6 +383,25 @@ export default function Categories() {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sort Order</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="1"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <FormField
@@ -301,12 +411,53 @@ export default function Categories() {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Enter category description" {...field} />
+                      <Textarea
+                        placeholder="Enter category description"
+                        {...field}
+                        rows={3}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">SEO Settings</h3>
+                <div className="grid grid-cols-1 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="metaTitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Meta Title</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter meta title" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="metaDescription"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Meta Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter meta description"
+                            {...field}
+                            rows={2}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
