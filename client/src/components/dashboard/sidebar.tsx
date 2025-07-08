@@ -96,7 +96,7 @@ const navigation: NavigationItem[] = [
     icon: Puzzle, 
     current: false,
     subItems: [
-      { name: "Installer", href: "/extensions/installer", current: false },
+      { name: "Extensions", href: "/extensions/extensions", current: false },
       { name: "Modifications", href: "/extensions/modifications", current: false },
       { name: "Events", href: "/extensions/events", current: false }
     ]
@@ -108,8 +108,10 @@ const navigation: NavigationItem[] = [
     current: false,
     subItems: [
       { name: "Layouts", href: "/design/layouts", current: false },
+      { name: "Theme Editor", href: "/design/theme-editor", current: false },
+      { name: "Language Editor", href: "/design/language-editor", current: false },
       { name: "Banners", href: "/design/banners", current: false },
-      { name: "Translations", href: "/design/translations", current: false }
+      { name: "SEO URL", href: "/design/seo-url", current: false }
     ]
   },
   { 
@@ -121,8 +123,7 @@ const navigation: NavigationItem[] = [
       { name: "Orders", href: "/sales/orders", current: false },
       { name: "Recurring Orders", href: "/sales/recurring-orders", current: false },
       { name: "Returns", href: "/sales/returns", current: false },
-      { name: "Gift Vouchers", href: "/sales/vouchers", current: false },
-      { name: "PayPal", href: "/sales/paypal", current: false }
+      { name: "Gift Vouchers", href: "/sales/vouchers", current: false }
     ]
   },
   { 
@@ -149,16 +150,25 @@ const navigation: NavigationItem[] = [
     ]
   },
   { 
-    name: "System", 
-    href: "/system", 
-    icon: Monitor, 
+    name: "Settings", 
+    href: "/settings", 
+    icon: Settings, 
     current: false,
     subItems: [
-      { name: "Settings", href: "/system/settings", current: false },
-      { name: "Users", href: "/system/users", current: false },
-      { name: "User Groups", href: "/system/user-groups", current: false },
-      { name: "API", href: "/system/api", current: false },
-      { name: "Maintenance", href: "/system/maintenance", current: false }
+      { name: "Settings", href: "/settings/settings", current: false },
+      { name: "Localisation", href: "/settings/localisation", current: false },
+      { name: "Maintenance", href: "/settings/maintenance", current: false }
+    ]
+  },
+  { 
+    name: "Users", 
+    href: "/users", 
+    icon: User, 
+    current: false,
+    subItems: [
+      { name: "Users", href: "/users/users", current: false },
+      { name: "User Groups", href: "/users/user-groups", current: false },
+      { name: "API", href: "/users/api", current: false }
     ]
   },
   { 
