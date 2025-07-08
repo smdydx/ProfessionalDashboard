@@ -53,7 +53,7 @@ export default function DataTable() {
                 className="w-64 pl-10 bg-white/10 border-white/20 text-white placeholder-white/60"
               />
             </div>
-            <Button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white">
+            <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white transition-all duration-200 active:scale-95">
               <Plus className="w-4 h-4 mr-2" />
               Add Order
             </Button>
@@ -146,13 +146,13 @@ export default function DataTable() {
                       </td>
                       <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white/60">
                         <div className="flex items-center space-x-1 sm:space-x-2">
-                          <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 hover:bg-white/10 p-1 sm:p-2">
+                          <Button variant="ghost" size="sm" className="text-green-400 hover:text-green-300 hover:bg-white/10 p-1 sm:p-2 transition-all duration-150 active:scale-95">
                             <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-white/10 p-1 sm:p-2">
+                          <Button variant="ghost" size="sm" className="text-emerald-400 hover:text-emerald-300 hover:bg-white/10 p-1 sm:p-2 transition-all duration-150 active:scale-95">
                             <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-white/10 p-1 sm:p-2">
+                          <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-white/10 p-1 sm:p-2 transition-all duration-150 active:scale-95">
                             <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                           </Button>
                         </div>
@@ -175,9 +175,6 @@ export default function DataTable() {
               </tbody>
             </table>
           </div>
-          </table>
-        </div>
-        
         </div>
         
         <div className="px-3 sm:px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -188,7 +185,7 @@ export default function DataTable() {
             <Button variant="outline" size="sm" disabled className="bg-white/10 border-white/20 text-white/60 text-xs sm:text-sm px-2 sm:px-3">
               Previous
             </Button>
-            <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs sm:text-sm px-2 sm:px-3">
+            <Button size="sm" className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs sm:text-sm px-2 sm:px-3 active:scale-95 transition-all duration-150">
               1
             </Button>
             <Button variant="outline" size="sm" className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs sm:text-sm px-2 sm:px-3">

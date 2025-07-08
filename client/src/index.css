@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    --primary: 142 76% 36%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 222.2 84% 4.9%;
@@ -22,28 +22,25 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    --ring: 142 76% 36%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --radius: 0.75rem;
 
-    /* Sidebar variables */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Custom gradients for light mode */
-    --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --card-gradient: rgba(255, 255, 255, 0.95);
+    /* Custom variables for dashboard theme - Dark Green Gradient */
+    --sidebar-bg: linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 101, 52, 0.95) 100%);
+    --header-bg: linear-gradient(135deg, rgba(34, 197, 94, 0.8) 0%, rgba(22, 101, 52, 0.8) 100%);
+    --card-gradient: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 101, 52, 0.1) 100%);
+    --sidebar-border: 142 76% 91%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-accent: rgba(255, 255, 255, 0.1);
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-primary: rgba(255, 255, 255, 0.2);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --shadow: 142 76% 69%;
   }
 
   .dark {
@@ -53,7 +50,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
+    --primary: 142 69% 58%;
     --primary-foreground: 222.2 84% 4.9%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -65,27 +62,24 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --ring: 142 69% 58%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    /* Sidebar variables for dark mode */
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 94.1%;
-    --sidebar-primary-foreground: 240 5.9% 10%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Custom gradients for dark mode */
-    --sidebar-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    --header-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    --card-gradient: rgba(15, 23, 42, 0.95);
+    /* Dark mode dashboard theme - Dark Green Gradient */
+    --sidebar-bg: linear-gradient(135deg, rgba(20, 83, 45, 0.95) 0%, rgba(22, 101, 52, 0.95) 100%);
+    --header-bg: linear-gradient(135deg, rgba(20, 83, 45, 0.8) 0%, rgba(22, 101, 52, 0.8) 100%);
+    --card-gradient: linear-gradient(135deg, rgba(22, 101, 52, 0.3) 0%, rgba(34, 197, 94, 0.1) 100%);
+    --sidebar-border: 142 32.6% 17.5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-accent: rgba(255, 255, 255, 0.1);
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-primary: rgba(34, 197, 94, 0.3);
+    --sidebar-primary-foreground: 210 40% 98%;
+    --shadow: 0 0% 0%;
   }
 }
 
@@ -131,12 +125,12 @@
   --input: hsl(217, 32%, 17%);
   --primary: hsl(217, 91%, 60%);
   --primary-foreground: hsl(222, 47%, 11%);
-  --secondary: hsl(217, 32%, 17%);
-  --secondary-foreground: hsl(210, 40%, 98%);
-  --accent: hsl(217, 32%, 17%);
-  --accent-foreground: hsl(210, 40%, 98%);
-  --destructive: hsl(0, 62%, 30%);
-  --destructive-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
   --ring: hsl(217, 91%, 60%);
   --success: hsl(142, 76%, 36%);
   --warning: hsl(32, 95%, 44%);
@@ -177,7 +171,7 @@
       font-size: 16px !important;
       -webkit-appearance: none;
     }
-    
+
     * {
       -webkit-tap-highlight-color: transparent;
     }
@@ -188,34 +182,34 @@
   .sidebar-transition {
     transition: transform 0.3s ease-in-out;
   }
-  
+
   .gradient-sidebar {
     background: var(--sidebar-bg);
     backdrop-filter: blur(20px);
     border-right: 1px solid hsl(var(--sidebar-border));
   }
-  
+
   .gradient-header {
     background: var(--header-bg);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid hsl(var(--border));
   }
-  
+
   .glass-card {
     background: var(--card-gradient);
     backdrop-filter: blur(20px);
     border: 1px solid hsl(var(--border));
     box-shadow: 0 8px 32px hsl(var(--shadow) / 0.12);
   }
-  
+
   .glow-effect {
     box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
   }
-  
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-  
+
   .animate-pulse-slow {
     animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -224,16 +218,16 @@
   .sidebar-text {
     color: hsl(var(--sidebar-foreground));
   }
-  
+
   .sidebar-text-muted {
     color: hsl(var(--sidebar-foreground) / 0.7);
   }
-  
+
   .sidebar-hover {
     background: hsl(var(--sidebar-accent));
     color: hsl(var(--sidebar-accent-foreground));
   }
-  
+
   .sidebar-active {
     background: hsl(var(--sidebar-primary));
     color: hsl(var(--sidebar-primary-foreground));
