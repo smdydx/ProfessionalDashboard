@@ -1,7 +1,20 @@
+The code is modified to include a theme toggle button in the header, enhancing the user interface with a dark/light mode switch.
+```
+
+```replit_final_file
 import { useState } from "react";
-import { Menu, Search, Bell, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
+import { Menu, Search, Bell, User, Settings, LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeaderProps {
@@ -29,7 +42,7 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
             <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Home / Dashboard</p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-2 sm:space-x-4">
           <div className="relative hidden md:block">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-white/60" />
@@ -44,9 +57,12 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
           <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
             <Search className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 hover:scale-105 transition-all duration-300">
-            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
+          <ThemeToggle />
+          <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
+            <Bell className="h-4 w-4" />
+            <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full text-[10px] flex items-center justify-center text-white">
+              3
+            </span>
           </Button>
           <button 
             onClick={() => window.location.href = '/profile/admin'}
@@ -59,3 +75,4 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
     </header>
   );
 }
+`

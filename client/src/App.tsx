@@ -103,6 +103,23 @@ import SystemAPI from "@/pages/system/users/api";
 import StoreLocation from "@/pages/system/localisation/store-location";
 import Languages from "@/pages/system/localisation/languages";
 import Currencies from "@/pages/system/localisation/currencies";
+import StockStatuses from "@/pages/system/localisation/stock-statuses";
+import OrderStatuses from "@/pages/system/localisation/order-statuses";
+import ReturnStatuses from "@/pages/system/localisation/returns/statuses";
+import ReturnActions from "@/pages/system/localisation/returns/actions";
+import ReturnReasons from "@/pages/system/localisation/returns/reasons";
+import Countries from "@/pages/system/localisation/countries";
+import Zones from "@/pages/system/localisation/zones";
+import GeoZones from "@/pages/system/localisation/geo-zones";
+import TaxClasses from "@/pages/system/localisation/taxes/classes";
+import TaxRates from "@/pages/system/localisation/taxes/rates";
+import LengthClasses from "@/pages/system/localisation/length-classes";
+import WeightClasses from "@/pages/system/localisation/weight-classes";
+
+// System Maintenance
+import BackupRestore from "@/pages/system/maintenance/backup-restore";
+import Uploads from "@/pages/system/maintenance/uploads";
+import ErrorLogs from "@/pages/system/maintenance/error-logs";
 
 // Price Management
 import OrdersCompleted from "@/pages/price-management/orders-completed";
@@ -214,6 +231,21 @@ function App() {
                 <Route path="/system/localisation/store-location" component={() => <StoreLocation />} />
                 <Route path="/system/localisation/languages" component={() => <Languages />} />
                 <Route path="/system/localisation/currencies" component={() => <Currencies />} />
+                <Route path="/system/localisation/stock-statuses" component={() => <StockStatuses />} />
+                <Route path="/system/localisation/order-statuses" component={() => <OrderStatuses />} />
+                <Route path="/system/localisation/returns/statuses" component={() => <ReturnStatuses />} />
+                <Route path="/system/localisation/returns/actions" component={() => <ReturnActions />} />
+                <Route path="/system/localisation/returns/reasons" component={() => <ReturnReasons />} />
+                <Route path="/system/localisation/countries" component={() => <Countries />} />
+                <Route path="/system/localisation/zones" component={() => <Zones />} />
+                <Route path="/system/localisation/geo-zones" component={() => <GeoZones />} />
+                <Route path="/system/localisation/taxes/classes" component={() => <TaxClasses />} />
+                <Route path="/system/localisation/taxes/rates" component={() => <TaxRates />} />
+                <Route path="/system/localisation/length-classes" component={() => <LengthClasses />} />
+                <Route path="/system/localisation/weight-classes" component={() => <WeightClasses />} />
+                <Route path="/system/maintenance/backup-restore" component={() => <BackupRestore />} />
+                <Route path="/system/maintenance/uploads" component={() => <Uploads />} />
+                <Route path="/system/maintenance/error-logs" component={() => <ErrorLogs />} />
                 <Route path="/system/newsletter" component={() => <Newsletter />} />
                 <Route path="/system/form-emails" component={() => <FormEmails />} />
                 <Route path="/system/import-export" component={() => <ImportExport />} />

@@ -1,66 +1,44 @@
-import { ReactNode } from "react";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React from "react";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import Sidebar from "@/components/dashboard/sidebar";
 import Header from "@/components/dashboard/header";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Search } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PageLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   title?: string;
-  description?: string;
-  onAdd?: () => void;
-  addButtonText?: string;
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  isLoading?: boolean;
+  subtitle?: string;
+  actions?: React.ReactNode;
 }
 
-export default function PageLayout({ 
-  children, 
-  title, 
-  description, 
-  onAdd, 
-  addButtonText = "Add", 
-  searchValue, 
-  onSearchChange, 
-  isLoading 
-}: PageLayoutProps) {
+export function PageLayout({ children, title, subtitle, actions }: PageLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const isMobile = useIsMobile();
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
-        <Sidebar isOpen={true} onClose={() => {}} />
-        <SidebarInset className="flex-1">
-          <Header />
-          <main className="flex-1 p-6">
-            {title && (
+      <div className="flex h-screen bg-background">
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <SidebarInset className="flex-1 flex flex-col overflow-hidden">
+          <Header onToggleSidebar={toggleSidebar} />
+          <main className="flex-1 overflow-auto p-4 md:p-6">
+            {(title || subtitle || actions) && (
               <div className="mb-6">
-                <div className="flex items-center justify-between space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-                    {description && (
-                      <p className="text-muted-foreground">{description}</p>
+                    {title && (
+                      <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+                    )}
+                    {subtitle && (
+                      <p className="text-muted-foreground">{subtitle}</p>
                     )}
                   </div>
-                  {onAdd && (
-                    <Button onClick={onAdd} disabled={isLoading}>
-                      <Plus className="mr-2 h-4 w-4" />
-                      {addButtonText}
-                    </Button>
+                  {actions && (
+                    <div className="flex gap-2">{actions}</div>
                   )}
                 </div>
-                {onSearchChange && (
-                  <div className="flex items-center space-x-2 mt-4">
-                    <Search className="h-4 w-4" />
-                    <Input 
-                      placeholder="Search..." 
-                      className="max-w-sm" 
-                      value={searchValue}
-                      onChange={(e) => onSearchChange(e.target.value)}
-                    />
-                  </div>
-                )}
               </div>
             )}
             {children}
