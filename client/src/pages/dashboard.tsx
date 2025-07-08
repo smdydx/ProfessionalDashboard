@@ -5,7 +5,6 @@ import Header from "@/components/dashboard/header";
 import StatsCards from "@/components/dashboard/stats-cards";
 import ChartsSection from "@/components/dashboard/charts-section";
 import DataTable from "@/components/dashboard/data-table";
-import OrdersStatus from "@/components/dashboard/orders-status";
 import RecentActivity from "@/components/dashboard/recent-activity";
 
 
@@ -40,11 +39,8 @@ export default function Dashboard() {
         
         <main className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
-            <div className="xl:col-span-3">
+            <div className="xl:col-span-4">
               <StatsCards />
-            </div>
-            <div className="xl:col-span-1">
-              <OrdersStatus />
             </div>
           </div>
           
