@@ -12,38 +12,38 @@ export default function StatsCards() {
     {
       title: "Total Orders",
       value: stats?.totalOrders || 55,
-      change: "0%",
-      changeType: "neutral" as const,
+      change: "+12%",
+      changeType: "positive" as const,
       icon: ShoppingCart,
-      bgColor: "bg-blue-100",
-      iconColor: "text-blue-600",
+      gradient: "from-blue-500 to-cyan-500",
+      bgGradient: "from-blue-500/20 to-cyan-500/20",
     },
     {
       title: "Total Sales",
       value: `Rs.${stats?.totalRevenue?.toLocaleString() || "52.6K"}`,
-      change: "0%",
-      changeType: "neutral" as const,
+      change: "+8%",
+      changeType: "positive" as const,
       icon: DollarSign,
-      bgColor: "bg-green-100",
-      iconColor: "text-green-600",
+      gradient: "from-green-500 to-emerald-500",
+      bgGradient: "from-green-500/20 to-emerald-500/20",
     },
     {
       title: "Total Customers",
       value: stats?.totalUsers || 351,
-      change: "0%",
-      changeType: "neutral" as const,
+      change: "+15%",
+      changeType: "positive" as const,
       icon: Users,
-      bgColor: "bg-purple-100",
-      iconColor: "text-purple-600",
+      gradient: "from-purple-500 to-violet-500",
+      bgGradient: "from-purple-500/20 to-violet-500/20",
     },
     {
       title: "People Online",
-      value: 0,
-      change: "",
-      changeType: "neutral" as const,
+      value: 24,
+      change: "+5%",
+      changeType: "positive" as const,
       icon: TrendingUp,
-      bgColor: "bg-orange-100",
-      iconColor: "text-orange-600",
+      gradient: "from-orange-500 to-red-500",
+      bgGradient: "from-orange-500/20 to-red-500/20",
     },
   ];
 
@@ -76,22 +76,22 @@ export default function StatsCards() {
         const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
         
         return (
-          <Card key={card.title} className="border border-slate-200">
+          <Card key={card.title} className="glass-card hover:glow-effect transition-all duration-300 hover:transform hover:scale-105 animate-float">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">{card.title}</p>
-                  <p className="text-2xl font-bold text-slate-800">{card.value}</p>
+                  <p className="text-sm font-medium text-white/70">{card.title}</p>
+                  <p className="text-2xl font-bold text-white">{card.value}</p>
                   {card.change && (
                     <p className={`text-sm flex items-center mt-1 ${changeColor}`}>
                       <ChangeIcon className="w-3 h-3 mr-1" />
                       <span>{card.change}</span>
                     </p>
                   )}
-                  <p className="text-xs text-slate-500 mt-1">View more...</p>
+                  <p className="text-xs text-white/50 mt-1 hover:text-white/80 cursor-pointer transition-colors">View more...</p>
                 </div>
-                <div className={`w-12 h-12 ${card.bgColor} rounded-lg flex items-center justify-center`}>
-                  <Icon className={`w-6 h-6 ${card.iconColor}`} />
+                <div className={`w-12 h-12 bg-gradient-to-r ${card.gradient} rounded-lg flex items-center justify-center glow-effect animate-pulse-slow`}>
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
             </CardContent>

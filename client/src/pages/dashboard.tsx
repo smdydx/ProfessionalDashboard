@@ -23,7 +23,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Mobile sidebar overlay */}
@@ -59,11 +59,11 @@ export default function Dashboard() {
           </div>
           
           {/* Footer */}
-          <footer className="mt-8 py-4 border-t border-slate-200 bg-white">
-            <div className="text-center text-sm text-slate-600">
-              OpenCart © 2009-2025 All Rights Reserved.
+          <footer className="mt-8 py-4 border-t border-white/10 glass-card">
+            <div className="text-center text-sm text-white/70">
+              <span className="text-gradient">OpenCart</span> © 2009-2025 All Rights Reserved.
               <br />
-              Version 3.0.3.8
+              Version 3.0.3.8 - <span className="text-white/50">Advanced Professional Theme</span>
             </div>
           </footer>
         </main>

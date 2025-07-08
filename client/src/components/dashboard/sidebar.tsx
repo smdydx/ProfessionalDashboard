@@ -298,11 +298,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div key={subItem.name}>
         <div
           className={cn(
-            "flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer",
+            "flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
             indentClass,
             isSubActive
-              ? "bg-primary/10 text-primary"
-              : "text-slate-600 hover:bg-slate-100"
+              ? "bg-white/15 text-white glow-effect"
+              : "text-white/70 hover:bg-white/5 hover:text-white"
           )}
           onClick={() => {
             if (hasSubItems) {
@@ -313,22 +313,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           }}
         >
           <div className="flex items-center space-x-3">
-            <div className="w-2 h-2 rounded-full bg-slate-400"></div>
+            <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse-slow"></div>
             <span>{subItem.name}</span>
           </div>
           {hasSubItems && (
             <div className="ml-auto">
               {isExpanded ? (
-                <ChevronDown className="w-3 h-3" />
+                <ChevronDown className="w-3 h-3 transition-transform" />
               ) : (
-                <ChevronRight className="w-3 h-3" />
+                <ChevronRight className="w-3 h-3 transition-transform" />
               )}
             </div>
           )}
         </div>
         
         {hasSubItems && isExpanded && (
-          <div className="mt-1 space-y-1">
+          <div className="mt-1 space-y-1 animate-in slide-in-from-top-2 duration-200">
             {subItem.subItems!.map((nestedItem) => renderSubItem(nestedItem, level + 1))}
           </div>
         )}
@@ -346,10 +346,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div key={item.name}>
         <div
           className={cn(
-            "flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-colors cursor-pointer",
+            "flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
             isActive
-              ? "bg-primary/10 text-primary"
-              : "text-slate-700 hover:bg-slate-100"
+              ? "bg-white/20 text-white glow-effect"
+              : "text-white/80 hover:bg-white/10 hover:text-white"
           )}
           onClick={() => {
             if (hasSubItems) {
@@ -366,16 +366,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {hasSubItems && (
             <div className="ml-auto">
               {isExpanded ? (
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-4 h-4 transition-transform" />
               ) : (
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 transition-transform" />
               )}
             </div>
           )}
         </div>
         
         {hasSubItems && isExpanded && (
-          <div className="mt-2 space-y-1">
+          <div className="mt-2 space-y-1 animate-in slide-in-from-top-2 duration-200">
             {item.subItems!.map((subItem) => renderSubItem(subItem))}
           </div>
         )}
@@ -386,17 +386,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <div
       className={cn(
-        "fixed left-0 top-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto",
+        "fixed left-0 top-0 h-full w-64 gradient-sidebar shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto",
         isMobile && !isOpen && "-translate-x-full",
         !isMobile && "translate-x-0"
       )}
     >
       <div className="p-6">
         <div className="flex items-center space-x-3 mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center glow-effect animate-float">
             <TrendingUp className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-slate-800">OpenCart</h1>
+          <h1 className="text-xl font-bold text-white text-gradient">OpenCart Admin</h1>
         </div>
         
         <nav className="space-y-2">
