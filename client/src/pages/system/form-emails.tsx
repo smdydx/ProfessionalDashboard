@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import PageLayout from "@/components/common/page-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Settings, Template } from "lucide-react";
+import { Mail, Settings, FileText } from "lucide-react";
 
 export default function FormEmails() {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +37,7 @@ export default function FormEmails() {
               <Card key={template.id}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <Template className="h-5 w-5 text-blue-500" />
+                    <FileText className="h-5 w-5 text-blue-500" />
                     <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
                       {template.status}
                     </span>
