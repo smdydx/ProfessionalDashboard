@@ -1,7 +1,3 @@
-The code is modified to include a theme toggle button in the header, enhancing the user interface with a dark/light mode switch.
-```
-
-```replit_final_file
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,4 +71,3 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
     </header>
   );
 }
-`

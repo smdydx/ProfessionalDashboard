@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import PageLayout from "@/components/common/page-layout";
+import { PageLayout } from "@/components/common/page-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

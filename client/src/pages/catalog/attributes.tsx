@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import PageLayout from "@/components/common/page-layout";
-import DataTable from "@/components/common/data-table";
+import { PageLayout } from "@/components/common/page-layout";
+import { DataTable } from "@/components/common/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

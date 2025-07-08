@@ -1,6 +1,6 @@
 
-import PageLayout from "@/components/common/page-layout";
-import DataTable from "@/components/common/data-table";
+import { PageLayout } from "@/components/common/page-layout";
+import { DataTable } from "@/components/common/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Key, Copy } from "lucide-react";
