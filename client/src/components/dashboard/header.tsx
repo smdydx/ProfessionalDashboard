@@ -48,9 +48,12 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
             <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
           </Button>
-          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+          <button 
+            onClick={() => window.location.href = '/profile/admin'}
+            className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center hover:scale-105 transition-transform duration-200"
+          >
             <User className="w-4 h-4 text-white" />
-          </div>
+          </button>
         </div>
       </div>
     </header>

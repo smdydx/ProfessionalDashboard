@@ -18,6 +18,7 @@ import Customers from "@/pages/customers/customers";
 
 // System Pages
 import SystemSettings from "@/pages/system/settings";
+import Users from "@/pages/system/users";
 
 // Reports Pages
 import Reports from "@/pages/reports/reports";
@@ -27,6 +28,13 @@ import Extensions from "@/pages/extensions/extensions";
 
 // Marketing Pages
 import Marketing from "@/pages/marketing/marketing";
+
+// Design Pages
+import Layouts from "@/pages/design/layouts";
+import ThemeEditor from "@/pages/design/theme-editor";
+
+// Profile Pages
+import AdminProfile from "@/pages/profile/admin-profile";
 
 function Router() {
   return (
@@ -47,14 +55,22 @@ function Router() {
       {/* Extensions Routes */}
       <Route path="/extensions/extensions" component={Extensions} />
       
+      {/* Design Routes */}
+      <Route path="/design/layouts" component={Layouts} />
+      <Route path="/design/theme-editor" component={ThemeEditor} />
+      
       {/* Marketing Routes */}
       <Route path="/marketing/marketing" component={Marketing} />
       
       {/* System Routes */}
       <Route path="/system/settings" component={SystemSettings} />
+      <Route path="/system/users" component={Users} />
       
       {/* Reports Routes */}
       <Route path="/reports/reports" component={Reports} />
+      
+      {/* Profile Routes */}
+      <Route path="/profile/admin" component={AdminProfile} />
       
       <Route component={NotFound} />
     </Switch>
