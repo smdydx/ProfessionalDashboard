@@ -12,6 +12,9 @@ import Products from "@/pages/catalog/products";
 import Categories from "@/pages/catalog/categories";
 import Manufacturers from "@/pages/catalog/manufacturers";
 import ProductImport from "@/pages/catalog/product-import";
+import Downloads from "@/pages/catalog/downloads";
+import Reviews from "@/pages/catalog/reviews";
+import Information from "@/pages/catalog/information";
 
 // Sales
 import Orders from "@/pages/sales/orders";
@@ -30,6 +33,19 @@ import JournalSkins from "@/pages/journal/skins";
 import JournalStyles from "@/pages/journal/styles";
 import JournalVariables from "@/pages/journal/variables";
 import ProductExtras from "@/pages/journal/product-extras";
+
+// Journal Blog
+import BlogSettings from "@/pages/journal/blog/settings";
+import BlogCategories from "@/pages/journal/blog/categories";
+import BlogPosts from "@/pages/journal/blog/posts";
+import BlogComments from "@/pages/journal/blog/comments";
+
+// Journal System
+import JournalSystemSettings from "@/pages/journal/system/settings";
+import JournalNewsletter from "@/pages/journal/system/newsletter";
+import JournalFormEmails from "@/pages/journal/system/form-emails";
+import JournalImportExport from "@/pages/journal/system/import-export";
+import JournalSystem from "@/pages/journal/system/system";
 
 // Design
 import DesignLayouts from "@/pages/design/layouts";
@@ -89,6 +105,9 @@ function App() {
                 <Route path="/catalog/categories" component={() => <Categories />} />
                 <Route path="/catalog/manufacturers" component={() => <Manufacturers />} />
                 <Route path="/catalog/product-import" component={() => <ProductImport />} />
+                <Route path="/catalog/downloads" component={() => <Downloads />} />
+                <Route path="/catalog/reviews" component={() => <Reviews />} />
+                <Route path="/catalog/information" component={() => <Information />} />
 
                 {/* Sales */}
                 <Route path="/sales/orders" component={() => <Orders />} />
@@ -107,6 +126,19 @@ function App() {
                 <Route path="/journal/styles" component={() => <JournalStyles />} />
                 <Route path="/journal/variables" component={() => <JournalVariables />} />
                 <Route path="/journal/product-extras" component={() => <ProductExtras />} />
+
+                {/* Journal Blog Routes */}
+                <Route path="/journal/blog/settings" component={() => <BlogSettings />} />
+                <Route path="/journal/blog/categories" component={() => <BlogCategories />} />
+                <Route path="/journal/blog/posts" component={() => <BlogPosts />} />
+                <Route path="/journal/blog/comments" component={() => <BlogComments />} />
+
+                {/* Journal System Routes */}
+                <Route path="/journal/system/settings" component={() => <JournalSystemSettings />} />
+                <Route path="/journal/system/newsletter" component={() => <JournalNewsletter />} />
+                <Route path="/journal/system/form-emails" component={() => <JournalFormEmails />} />
+                <Route path="/journal/system/import-export" component={() => <JournalImportExport />} />
+                <Route path="/journal/system/system" component={() => <JournalSystem />} />
 
                 {/* Design */}
                 <Route path="/design/layouts" component={() => <DesignLayouts />} />
