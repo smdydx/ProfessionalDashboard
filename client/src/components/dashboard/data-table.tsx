@@ -63,124 +63,141 @@ export default function DataTable() {
       
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-white/5">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Order ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Customer
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Product
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Date Added
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
+          <div className="min-w-[800px]">
+            <table className="w-full">
+              <thead className="bg-white/5">
+                <tr>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Order ID
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Customer
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Product
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Date Added
+                  </th>
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">
+                    Action
+                  </th>
+                </tr>
+              </thead>
             <tbody className="divide-y divide-white/10">
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="hover:bg-white/5">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-4 w-16 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-4 w-24 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-4 w-20 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-4 w-16 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-6 w-20 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Skeleton className="h-4 w-24 bg-white/20" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center space-x-2">
-                        <Skeleton className="h-4 w-4 bg-white/20" />
-                        <Skeleton className="h-4 w-4 bg-white/20" />
-                        <Skeleton className="h-4 w-4 bg-white/20" />
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i} className="hover:bg-white/5">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-4 w-16 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-4 w-24 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-4 w-20 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-4 w-16 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-6 w-20 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Skeleton className="h-4 w-24 bg-white/20" />
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center space-x-1 sm:space-x-2">
+                          <Skeleton className="h-4 w-4 bg-white/20" />
+                          <Skeleton className="h-4 w-4 bg-white/20" />
+                          <Skeleton className="h-4 w-4 bg-white/20" />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : filteredOrders && filteredOrders.length > 0 ? (
+                  filteredOrders.map((order: Order) => (
+                    <tr key={order.id} className="hover:bg-white/5 transition-colors">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                        {order.orderId}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white/80">
+                        {order.customerName}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white/80">
+                        {order.productName}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
+                        Rs.{order.amount}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <Badge className={`${getStatusColor(order.status)} text-white`}>
+                          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </Badge>
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                        {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                        <div className="flex items-center space-x-1 sm:space-x-2">
+                          <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 hover:bg-white/10 p-1 sm:p-2">
+                            <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 hover:bg-white/10 p-1 sm:p-2">
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-white/10 p-1 sm:p-2">
+                            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="px-3 sm:px-6 py-8 text-center text-white/60">
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                          <Search className="w-6 h-6 text-white/40" />
+                        </div>
+                        <p className="text-sm">No orders found</p>
+                        <p className="text-xs text-white/40">Try adjusting your search terms</p>
                       </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                filteredOrders?.map((order: Order) => (
-                  <tr key={order.id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-                      {order.orderId}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
-                      {order.customerName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
-                      {order.productName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
-                      Rs.{order.amount}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Badge className={`${getStatusColor(order.status)} text-white`}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
-                      {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
-                      <div className="flex items-center space-x-2">
-                        <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 hover:bg-white/10">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
+                )}
+              </tbody>
+            </table>
+          </div>
           </table>
         </div>
         
-        <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between">
-          <div className="text-sm text-slate-500">
+        </div>
+        
+        <div className="px-3 sm:px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-white/60">
             Showing {filteredOrders?.length || 0} results
           </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" disabled>
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            <Button variant="outline" size="sm" disabled className="bg-white/10 border-white/20 text-white/60 text-xs sm:text-sm px-2 sm:px-3">
               Previous
             </Button>
-            <Button variant="default" size="sm">
+            <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs sm:text-sm px-2 sm:px-3">
               1
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs sm:text-sm px-2 sm:px-3">
               2
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs sm:text-sm px-2 sm:px-3">
               3
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs sm:text-sm px-2 sm:px-3">
               Next
             </Button>
           </div>
