@@ -122,7 +122,7 @@ export default function Categories() {
     {
       key: "name",
       header: "Category Name",
-      render: (category: Category) => {
+      render: (value: any, category: Category) => {
         const level = getCategoryLevel(category);
         const indent = "  ".repeat(level);
         return (
@@ -141,7 +141,7 @@ export default function Categories() {
     {
       key: "slug",
       header: "Slug",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <code className="text-sm bg-gray-100 px-2 py-1 rounded">
           {category.slug}
         </code>
@@ -150,7 +150,7 @@ export default function Categories() {
     {
       key: "parent",
       header: "Parent Category",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <span className="text-sm text-gray-600">
           {getParentName(category.parentId)}
         </span>
@@ -159,7 +159,7 @@ export default function Categories() {
     {
       key: "productCount",
       header: "Products",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <div className="text-center">
           <Badge variant="outline">{category.productCount}</Badge>
         </div>
@@ -168,14 +168,14 @@ export default function Categories() {
     {
       key: "sortOrder",
       header: "Sort Order",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <div className="text-center">{category.sortOrder}</div>
       ),
     },
     {
       key: "status",
       header: "Status",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <Badge variant={category.status === "active" ? "default" : "secondary"}>
           {category.status}
         </Badge>
@@ -184,7 +184,7 @@ export default function Categories() {
     {
       key: "actions",
       header: "Actions",
-      render: (category: Category) => (
+      render: (value: any, category: Category) => (
         <div className="flex space-x-2">
           <Button
             variant="ghost"
