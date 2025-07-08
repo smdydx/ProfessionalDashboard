@@ -1,6 +1,6 @@
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@3.0.0/countries-110m.json";
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@3.0.0/countries-50m.json";
 
 // Sample data points for demonstration
 const markers = [
@@ -14,35 +14,25 @@ const markers = [
 
 export default function WorldMap() {
   return (
-    <div className="glass-card p-6 relative overflow-hidden">
-      {/* Animated background grid */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="grid grid-cols-12 h-full">
-          {Array.from({ length: 144 }).map((_, i) => (
-            <div 
-              key={i} 
-              className="border border-white/20 animate-pulse" 
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
-          ))}
-        </div>
+    <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 rounded-lg shadow-2xl p-6 border border-blue-700/30">
+      <div className="mb-6">
+        <h3 className="text-2xl font-bold text-white mb-2">Global Activity Map</h3>
+        <p className="text-blue-200">Real-time user activity across continents</p>
       </div>
       
-      <div className="mb-6 relative z-10">
-        <h3 className="text-xl font-bold text-gradient mb-2">Global Digital Network</h3>
-        <p className="text-white/70">Real-time worldwide connections and activity</p>
-      </div>
-      
-      <div className="w-full h-96 relative z-10 bg-gradient-to-br from-slate-900/50 to-purple-900/50 rounded-lg border border-white/10 backdrop-blur-sm">
+      <div className="w-full h-96 relative bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 rounded-lg border border-blue-500/30 shadow-inner overflow-hidden">
+        {/* Ocean gradient background */}
+        <div className="absolute inset-0 bg-gradient-radial from-blue-400/20 via-blue-600/30 to-blue-900"></div>
+        
         <ComposableMap
-          projection="geoMercator"
+          projection="geoNaturalEarth1"
           projectionConfig={{
-            scale: 147,
-            center: [0, 20]
+            scale: 160,
+            center: [0, 0]
           }}
           width={800}
           height={400}
-          className="w-full h-full"
+          className="w-full h-full relative z-10"
         >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
@@ -50,12 +40,12 @@ export default function WorldMap() {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#1e293b"
-                  stroke="#06b6d4"
-                  strokeWidth={0.3}
-                  className="hover:fill-cyan-900/50 transition-all duration-300 drop-shadow-sm"
+                  fill="#2d5016"
+                  stroke="#4a7c59"
+                  strokeWidth={0.5}
+                  className="hover:fill-green-600 transition-colors duration-300"
                   style={{
-                    filter: "drop-shadow(0 0 2px rgba(6, 182, 212, 0.3))"
+                    filter: "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))"
                   }}
                 />
               ))
@@ -64,75 +54,70 @@ export default function WorldMap() {
           
           {markers.map(({ name, coordinates, value }, index) => (
             <Marker key={name} coordinates={coordinates}>
-              {/* Outer glow ring */}
+              {/* Ripple effect */}
               <circle 
-                r={Math.sqrt(value / 30) + 8} 
+                r={15} 
                 fill="none"
-                stroke="#06b6d4"
-                strokeWidth={1}
-                opacity={0.3}
+                stroke="#fbbf24"
+                strokeWidth={2}
+                opacity={0.4}
                 className="animate-ping"
-                style={{ animationDelay: `${index * 0.5}s` }}
+                style={{ animationDelay: `${index * 0.8}s` }}
               />
-              {/* Main marker */}
+              {/* Main city marker */}
               <circle 
-                r={Math.sqrt(value / 50)} 
-                fill="#06b6d4" 
-                stroke="#0891b2"
+                r={6} 
+                fill="#f59e0b" 
+                stroke="#fff"
                 strokeWidth={2}
                 className="drop-shadow-lg"
-                style={{
-                  filter: "drop-shadow(0 0 6px rgba(6, 182, 212, 0.8))"
-                }}
               />
-              {/* Inner pulse */}
+              {/* Inner highlight */}
               <circle 
-                r={Math.sqrt(value / 100)} 
-                fill="#fff"
-                className="animate-pulse"
-                style={{ animationDelay: `${index * 0.3}s` }}
+                r={3} 
+                fill="#fef3c7"
+                opacity={0.8}
               />
               <text
                 textAnchor="middle"
-                y={-20}
-                className="text-xs font-bold fill-cyan-300 drop-shadow-lg"
+                y={-12}
+                className="text-xs font-semibold fill-white"
                 style={{ 
-                  fontSize: "11px",
-                  filter: "drop-shadow(0 0 3px rgba(6, 182, 212, 0.8))"
+                  fontSize: "10px",
+                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)"
                 }}
               >
                 {name}
               </text>
               <text
                 textAnchor="middle"
-                y={-8}
-                className="text-xs fill-white font-medium"
+                y={25}
+                className="text-xs fill-yellow-200 font-medium"
                 style={{ 
-                  fontSize: "9px",
-                  filter: "drop-shadow(0 0 2px rgba(0, 0, 0, 0.8))"
+                  fontSize: "8px",
+                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)"
                 }}
               >
-                {value}
+                {value} users
               </text>
             </Marker>
           ))}
         </ComposableMap>
       </div>
       
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4 relative z-10">
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
         {markers.map((marker, index) => (
-          <div key={marker.name} className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+          <div key={marker.name} className="flex items-center space-x-3 p-3 bg-white/10 rounded-lg border border-blue-400/30 backdrop-blur-sm hover:bg-white/15 transition-colors">
             <div className="relative">
-              <div className="w-4 h-4 bg-cyan-400 rounded-full animate-pulse shadow-lg" 
+              <div className="w-4 h-4 bg-amber-400 rounded-full shadow-lg" 
                    style={{ 
-                     boxShadow: "0 0 10px rgba(6, 182, 212, 0.8)",
-                     animationDelay: `${index * 0.2}s`
+                     boxShadow: "0 0 8px rgba(251, 191, 36, 0.6)"
                    }}></div>
-              <div className="absolute inset-0 w-4 h-4 bg-cyan-400 rounded-full animate-ping opacity-50"></div>
+              <div className="absolute inset-0 w-4 h-4 bg-amber-400 rounded-full animate-pulse opacity-60"></div>
             </div>
             <div>
               <span className="text-sm font-bold text-white">{marker.name}</span>
-              <p className="text-xs text-cyan-300">{marker.value} active</p>
+              <p className="text-xs text-amber-200">{marker.value} online</p>
             </div>
           </div>
         ))}
