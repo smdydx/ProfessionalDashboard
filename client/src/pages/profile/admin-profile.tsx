@@ -1,604 +1,474 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { PageLayout } from "@/components/common/page-layout";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useToast } from "@/hooks/use-toast";
-import { User, Edit2, Shield, Bell, Key, Activity, Settings, Mail, Phone, MapPin, Calendar, Clock } from "lucide-react";
-
-const profileSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  bio: z.string().optional(),
-});
-
-const passwordSchema = z.object({
-  currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Please confirm your password"),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
-
-type ProfileFormData = z.infer<typeof profileSchema>;
-type PasswordFormData = z.infer<typeof passwordSchema>;
-
-// Mock admin profile data
-const mockProfile = {
-  id: 1,
-  firstName: "Admin",
-  lastName: "User",
-  email: "admin@opencart.com",
-  phone: "+1 (555) 123-4567",
-  address: "123 Admin Street",
-  city: "Admin City",
-  country: "United States",
-  bio: "Store administrator with full access privileges",
-  role: "Super Admin",
-  avatar: "/avatars/admin.jpg",
-  lastLogin: "2024-01-15 10:30:00",
-  createdAt: "2023-01-01",
-  status: "active",
-  permissions: ["all"],
-  twoFactorEnabled: false,
-  emailNotifications: true,
-  smsNotifications: false,
-};
-
-// Mock activity data
-const mockActivity = [
-  {
-    id: 1,
-    action: "Updated product catalog",
-    timestamp: "2024-01-15 10:30:00",
-    ip: "192.168.1.1",
-    userAgent: "Chrome 120.0.0.0"
-  },
-  {
-    id: 2,
-    action: "Modified system settings",
-    timestamp: "2024-01-15 09:15:00",
-    ip: "192.168.1.1",
-    userAgent: "Chrome 120.0.0.0"
-  },
-  {
-    id: 3,
-    action: "Added new user",
-    timestamp: "2024-01-14 16:45:00",
-    ip: "192.168.1.1",
-    userAgent: "Chrome 120.0.0.0"
-  },
-];
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import Header from "@/components/dashboard/header";
+import { 
+  User, 
+  Mail, 
+  Phone, 
+  Shield, 
+  Key, 
+  Bell, 
+  Globe, 
+  Camera, 
+  Save,
+  Edit,
+  Settings,
+  Activity,
+  Clock,
+  MapPin,
+  Calendar,
+  Check,
+  X,
+  Upload
+} from "lucide-react";
 
 export default function AdminProfile() {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
-  const { data: profile = mockProfile, isLoading = false } = useQuery({
-    queryKey: ["/api/admin/profile"],
-    queryFn: () => Promise.resolve(mockProfile),
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@admin.com",
+    phone: "+1 (555) 123-4567",
+    bio: "Senior Administrator with 5+ years of experience in e-commerce management.",
+    location: "New York, USA",
+    timezone: "EST (UTC-5)",
+    language: "English",
+    website: "https://johndoe.com"
   });
 
-  const { data: activity = mockActivity } = useQuery({
-    queryKey: ["/api/admin/activity"],
-    queryFn: () => Promise.resolve(mockActivity),
+  const [notifications, setNotifications] = useState({
+    emailNotifications: true,
+    pushNotifications: false,
+    smsNotifications: true,
+    marketingEmails: false
   });
 
-  const profileForm = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      firstName: profile.firstName || "",
-      lastName: profile.lastName || "",
-      email: profile.email || "",
-      phone: profile.phone || "",
-      address: profile.address || "",
-      city: profile.city || "",
-      country: profile.country || "",
-      bio: profile.bio || "",
-    },
+  const [security, setSecurity] = useState({
+    twoFactorAuth: true,
+    sessionTimeout: "30",
+    loginAlerts: true
   });
 
-  const passwordForm = useForm<PasswordFormData>({
-    resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
+  const recentActivity = [
+    { action: "Updated product catalog", time: "2 hours ago", status: "success" },
+    { action: "Modified user permissions", time: "5 hours ago", status: "warning" },
+    { action: "Generated sales report", time: "1 day ago", status: "success" },
+    { action: "System backup completed", time: "2 days ago", status: "success" },
+    { action: "Password changed", time: "1 week ago", status: "info" }
+  ];
 
-  const updateProfileMutation = useMutation({
-    mutationFn: (data: ProfileFormData) => {
-      return Promise.resolve({ ...profile, ...data });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/profile"] });
-      setIsEditDialogOpen(false);
-      toast({ title: "Profile updated successfully" });
-    },
-    onError: () => {
-      toast({ title: "Failed to update profile", variant: "destructive" });
-    },
-  });
-
-  const updatePasswordMutation = useMutation({
-    mutationFn: (data: PasswordFormData) => {
-      return Promise.resolve();
-    },
-    onSuccess: () => {
-      setIsPasswordDialogOpen(false);
-      passwordForm.reset();
-      toast({ title: "Password updated successfully" });
-    },
-    onError: () => {
-      toast({ title: "Failed to update password", variant: "destructive" });
-    },
-  });
-
-  const onProfileSubmit = (data: ProfileFormData) => {
-    updateProfileMutation.mutate(data);
+  const handleSave = () => {
+    setIsEditing(false);
+    // Handle save logic here
   };
 
-  const onPasswordSubmit = (data: PasswordFormData) => {
-    updatePasswordMutation.mutate(data);
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleEditProfile = () => {
-    profileForm.reset({
-      firstName: profile.firstName || "",
-      lastName: profile.lastName || "",
-      email: profile.email || "",
-      phone: profile.phone || "",
-      address: profile.address || "",
-      city: profile.city || "",
-      country: profile.country || "",
-      bio: profile.bio || "",
-    });
-    setIsEditDialogOpen(true);
+  const handleNotificationChange = (setting: string, value: boolean) => {
+    setNotifications(prev => ({ ...prev, [setting]: value }));
+  };
+
+  const handleSecurityChange = (setting: string, value: string | boolean) => {
+    setSecurity(prev => ({ ...prev, [setting]: value }));
   };
 
   return (
-    <PageLayout
-      title="Admin Profile"
-      description="Manage your administrator profile and account settings"
-      isLoading={isLoading}
-    >
-      <div className="space-y-6">
-        {/* Profile Header */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center space-x-4">
-              <Avatar className="w-20 h-20">
-                <AvatarImage src={profile.avatar} alt={`${profile.firstName} ${profile.lastName}`} />
-                <AvatarFallback className="text-lg">
-                  {profile.firstName?.[0]}{profile.lastName?.[0]}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold">{profile.firstName} {profile.lastName}</h2>
-                <p className="text-gray-600">{profile.email}</p>
-                <div className="flex items-center gap-4 mt-2">
-                  <Badge variant="default">{profile.role}</Badge>
-                  <Badge variant={profile.status === "active" ? "default" : "secondary"}>
-                    {profile.status}
-                  </Badge>
-                </div>
-              </div>
-              <Button onClick={handleEditProfile} className="flex items-center gap-2">
-                <Edit2 className="w-4 h-4" />
+    <div className="min-h-screen bg-background">
+      <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Admin Profile</h1>
+            <p className="text-muted-foreground mt-1">Manage your account settings and preferences</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            {isEditing ? (
+              <>
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+                <Button onClick={handleSave}>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <Button onClick={() => setIsEditing(true)}>
+                <Edit className="h-4 w-4 mr-2" />
                 Edit Profile
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </div>
+        </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-          </TabsList>
+        <Separator />
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    Personal Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-400" />
-                    <span>{profile.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-gray-400" />
-                    <span>{profile.phone || "Not provided"}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span>{profile.address ? `${profile.address}, ${profile.city}, ${profile.country}` : "Not provided"}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-400" />
-                    <span>Member since {profile.createdAt}</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="w-5 h-5" />
-                    Account Status
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Last Login</label>
-                    <p className="text-sm text-gray-600">{profile.lastLogin}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Account Status</label>
-                    <p className="text-sm text-green-600 capitalize">{profile.status}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Role</label>
-                    <p className="text-sm text-blue-600">{profile.role}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Bio</label>
-                    <p className="text-sm text-gray-600">{profile.bio || "No bio provided"}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="security" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Key className="w-5 h-5" />
-                    Password Security
-                  </CardTitle>
-                  <CardDescription>
-                    Keep your account secure with a strong password
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button 
-                    onClick={() => setIsPasswordDialogOpen(true)}
-                    className="w-full"
-                  >
-                    Change Password
-                  </Button>
-                  <div className="text-sm text-gray-600">
-                    Last password change: January 1, 2024
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Shield className="w-5 h-5" />
-                    Two-Factor Authentication
-                  </CardTitle>
-                  <CardDescription>
-                    Add an extra layer of security to your account
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span>Enable 2FA</span>
-                    <Switch checked={profile.twoFactorEnabled} />
-                  </div>
-                  <Button variant="outline" className="w-full">
-                    Configure 2FA
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="notifications" className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Profile Overview */}
+          <div className="lg:col-span-1">
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="w-5 h-5" />
-                  Notification Preferences
-                </CardTitle>
-                <CardDescription>
-                  Choose how you want to receive notifications
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <label className="font-medium">Email Notifications</label>
-                    <p className="text-sm text-gray-600">Receive notifications via email</p>
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative">
+                    <Avatar className="h-24 w-24">
+                      <AvatarImage src="/placeholder-avatar.jpg" alt="Admin Avatar" />
+                      <AvatarFallback className="text-xl">{formData.firstName[0]}{formData.lastName[0]}</AvatarFallback>
+                    </Avatar>
+                    {isEditing && (
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
+                      >
+                        <Camera className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
-                  <Switch checked={profile.emailNotifications} />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <label className="font-medium">SMS Notifications</label>
-                    <p className="text-sm text-gray-600">Receive notifications via SMS</p>
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold">{formData.firstName} {formData.lastName}</h3>
+                    <p className="text-muted-foreground">Super Administrator</p>
+                    <Badge variant="secondary" className="mt-2">
+                      <Shield className="h-3 w-3 mr-1" />
+                      Admin
+                    </Badge>
                   </div>
-                  <Switch checked={profile.smsNotifications} />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <label className="font-medium">Push Notifications</label>
-                    <p className="text-sm text-gray-600">Receive browser push notifications</p>
-                  </div>
-                  <Switch checked={false} />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="activity" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="w-5 h-5" />
-                  Recent Activity
-                </CardTitle>
-                <CardDescription>
-                  Your recent account activity and login history
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {activity.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <div className="font-medium">{item.action}</div>
-                        <div className="text-sm text-gray-600">
-                          {item.timestamp} • {item.ip}
-                        </div>
-                      </div>
-                      <Badge variant="outline">{item.userAgent.split(' ')[0]}</Badge>
+                  <div className="w-full space-y-3 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="truncate">{formData.email}</span>
                     </div>
-                  ))}
+                    <div className="flex items-center space-x-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <span>{formData.phone}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span>{formData.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <span className="truncate">{formData.website}</span>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+
+            {/* Quick Stats */}
+            <Card className="mt-4">
+              <CardHeader>
+                <CardTitle className="text-base">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Last Login</span>
+                  <span className="text-sm font-medium">Today, 9:30 AM</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Total Sessions</span>
+                  <span className="text-sm font-medium">1,247</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Account Created</span>
+                  <span className="text-sm font-medium">Jan 2023</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            <Tabs defaultValue="personal" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="personal">Personal Info</TabsTrigger>
+                <TabsTrigger value="security">Security</TabsTrigger>
+                <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                <TabsTrigger value="activity">Activity</TabsTrigger>
+              </TabsList>
+
+              {/* Personal Information Tab */}
+              <TabsContent value="personal" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Personal Information</CardTitle>
+                    <CardDescription>
+                      Update your personal details and contact information
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        disabled={!isEditing}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input
+                          id="phone"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="location">Location</Label>
+                        <Input
+                          id="location"
+                          value={formData.location}
+                          onChange={(e) => handleInputChange('location', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bio">Bio</Label>
+                      <Textarea
+                        id="bio"
+                        value={formData.bio}
+                        onChange={(e) => handleInputChange('bio', e.target.value)}
+                        disabled={!isEditing}
+                        rows={3}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="timezone">Timezone</Label>
+                        <Input
+                          id="timezone"
+                          value={formData.timezone}
+                          onChange={(e) => handleInputChange('timezone', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="website">Website</Label>
+                        <Input
+                          id="website"
+                          value={formData.website}
+                          onChange={(e) => handleInputChange('website', e.target.value)}
+                          disabled={!isEditing}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Security Tab */}
+              <TabsContent value="security" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Security Settings</CardTitle>
+                    <CardDescription>
+                      Manage your account security and authentication preferences
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Two-Factor Authentication</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Add an extra layer of security to your account
+                        </p>
+                      </div>
+                      <Switch
+                        checked={security.twoFactorAuth}
+                        onCheckedChange={(value) => handleSecurityChange('twoFactorAuth', value)}
+                      />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Login Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get notified when someone logs into your account
+                        </p>
+                      </div>
+                      <Switch
+                        checked={security.loginAlerts}
+                        onCheckedChange={(value) => handleSecurityChange('loginAlerts', value)}
+                      />
+                    </div>
+                    <Separator />
+                    <div className="space-y-2">
+                      <Label htmlFor="sessionTimeout">Session Timeout (minutes)</Label>
+                      <Input
+                        id="sessionTimeout"
+                        type="number"
+                        value={security.sessionTimeout}
+                        onChange={(e) => handleSecurityChange('sessionTimeout', e.target.value)}
+                        className="w-32"
+                      />
+                    </div>
+                    <Separator />
+                    <div className="space-y-3">
+                      <Label>Password Management</Label>
+                      <div className="flex space-x-2">
+                        <Button variant="outline">
+                          <Key className="h-4 w-4 mr-2" />
+                          Change Password
+                        </Button>
+                        <Button variant="outline">
+                          <Upload className="h-4 w-4 mr-2" />
+                          Download Backup Codes
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Notifications Tab */}
+              <TabsContent value="notifications" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Notification Preferences</CardTitle>
+                    <CardDescription>
+                      Choose how you want to receive notifications
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Email Notifications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive notifications via email
+                        </p>
+                      </div>
+                      <Switch
+                        checked={notifications.emailNotifications}
+                        onCheckedChange={(value) => handleNotificationChange('emailNotifications', value)}
+                      />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Push Notifications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive push notifications in your browser
+                        </p>
+                      </div>
+                      <Switch
+                        checked={notifications.pushNotifications}
+                        onCheckedChange={(value) => handleNotificationChange('pushNotifications', value)}
+                      />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>SMS Notifications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive important alerts via SMS
+                        </p>
+                      </div>
+                      <Switch
+                        checked={notifications.smsNotifications}
+                        onCheckedChange={(value) => handleNotificationChange('smsNotifications', value)}
+                      />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <Label>Marketing Emails</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive updates about new features and promotions
+                        </p>
+                      </div>
+                      <Switch
+                        checked={notifications.marketingEmails}
+                        onCheckedChange={(value) => handleNotificationChange('marketingEmails', value)}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Activity Tab */}
+              <TabsContent value="activity" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Activity</CardTitle>
+                    <CardDescription>
+                      View your recent actions and system activities
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {recentActivity.map((activity, index) => (
+                        <div key={index} className="flex items-center space-x-4 p-3 rounded-lg border">
+                          <div className={`p-2 rounded-full ${
+                            activity.status === 'success' ? 'bg-green-100 text-green-600' :
+                            activity.status === 'warning' ? 'bg-yellow-100 text-yellow-600' :
+                            activity.status === 'info' ? 'bg-blue-100 text-blue-600' :
+                            'bg-gray-100 text-gray-600'
+                          }`}>
+                            <Activity className="h-4 w-4" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">{activity.action}</p>
+                            <p className="text-sm text-muted-foreground flex items-center">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {activity.time}
+                            </p>
+                          </div>
+                          <Badge variant={
+                            activity.status === 'success' ? 'default' :
+                            activity.status === 'warning' ? 'destructive' :
+                            'secondary'
+                          }>
+                            {activity.status}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
-
-      {/* Edit Profile Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Edit2 className="w-5 h-5" />
-              Edit Profile
-            </DialogTitle>
-          </DialogHeader>
-          <Form {...profileForm}>
-            <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={profileForm.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter first name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={profileForm.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter last name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={profileForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="Enter email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={profileForm.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter phone number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={profileForm.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Address</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter address" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={profileForm.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>City</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter city" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={profileForm.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter country" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={profileForm.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Bio</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Enter bio" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={updateProfileMutation.isPending}>
-                  Update Profile
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Change Password Dialog */}
-      <Dialog open={isPasswordDialogOpen} onOpenChange={setIsPasswordDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Key className="w-5 h-5" />
-              Change Password
-            </DialogTitle>
-          </DialogHeader>
-          <Form {...passwordForm}>
-            <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
-              <FormField
-                control={passwordForm.control}
-                name="currentPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Current Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Enter current password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={passwordForm.control}
-                name="newPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>New Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Enter new password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={passwordForm.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm New Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Confirm new password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsPasswordDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={updatePasswordMutation.isPending}>
-                  Update Password
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </PageLayout>
+    </div>
   );
 }

@@ -120,6 +120,8 @@ import WeightClasses from "@/pages/system/localisation/weight-classes";
 import BackupRestore from "@/pages/system/maintenance/backup-restore";
 import Uploads from "@/pages/system/maintenance/uploads";
 import ErrorLogs from "@/pages/system/maintenance/error-logs";
+import LocalisationIndex from "@/pages/system/localisation/index";
+import MaintenanceIndex from "@/pages/system/maintenance/index";
 
 // Price Management
 import OrdersCompleted from "@/pages/price-management/orders-completed";
@@ -228,6 +230,7 @@ function App() {
                 <Route path="/system/users/users" component={() => <SystemUsers />} />
                 <Route path="/system/users/user-groups" component={() => <UserGroups />} />
                 <Route path="/system/users/api" component={() => <SystemAPI />} />
+                <Route path="/system/localisation" component={() => <LocalisationIndex />} />
                 <Route path="/system/localisation/store-location" component={() => <StoreLocation />} />
                 <Route path="/system/localisation/languages" component={() => <Languages />} />
                 <Route path="/system/localisation/currencies" component={() => <Currencies />} />
@@ -243,6 +246,7 @@ function App() {
                 <Route path="/system/localisation/taxes/rates" component={() => <TaxRates />} />
                 <Route path="/system/localisation/length-classes" component={() => <LengthClasses />} />
                 <Route path="/system/localisation/weight-classes" component={() => <WeightClasses />} />
+                <Route path="/system/maintenance" component={() => <MaintenanceIndex />} />
                 <Route path="/system/maintenance/backup-restore" component={() => <BackupRestore />} />
                 <Route path="/system/maintenance/uploads" component={() => <Uploads />} />
                 <Route path="/system/maintenance/error-logs" component={() => <ErrorLogs />} />
@@ -268,6 +272,7 @@ function App() {
 
                 {/* Profile */}
                 <Route path="/profile" component={() => <AdminProfile />} />
+                <Route path="/profile/admin" component={() => <AdminProfile />} />
 
                 {/* 404 */}
                 <Route component={() => <NotFound />} />

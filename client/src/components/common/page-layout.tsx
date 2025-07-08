@@ -1,50 +1,73 @@
+
 import React from "react";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import Sidebar from "@/components/dashboard/sidebar";
-import Header from "@/components/dashboard/header";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft, Settings, Plus } from "lucide-react";
 
 interface PageLayoutProps {
+  title: string;
+  description?: string;
   children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
+  showBackButton?: boolean;
+  onBack?: () => void;
   actions?: React.ReactNode;
+  headerActions?: React.ReactNode;
 }
 
-export function PageLayout({ children, title, subtitle, actions }: PageLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const isMobile = useIsMobile();
-
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
+export function PageLayout({
+  title,
+  description,
+  children,
+  showBackButton = false,
+  onBack,
+  actions,
+  headerActions
+}: PageLayoutProps) {
   return (
-    <SidebarProvider>
-      <div className="flex h-screen bg-background">
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <SidebarInset className="flex-1 flex flex-col overflow-hidden">
-          <Header onToggleSidebar={toggleSidebar} />
-          <main className="flex-1 overflow-auto p-4 md:p-6">
-            {(title || subtitle || actions) && (
-              <div className="mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    {title && (
-                      <h1 className="text-2xl font-bold text-foreground">{title}</h1>
-                    )}
-                    {subtitle && (
-                      <p className="text-muted-foreground">{subtitle}</p>
-                    )}
-                  </div>
-                  {actions && (
-                    <div className="flex gap-2">{actions}</div>
-                  )}
-                </div>
-              </div>
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {showBackButton && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onBack}
+              className="shrink-0"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          )}
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+            {description && (
+              <p className="text-muted-foreground mt-1">{description}</p>
             )}
-            {children}
-          </main>
-        </SidebarInset>
+          </div>
+        </div>
+        {headerActions && (
+          <div className="flex items-center space-x-2">
+            {headerActions}
+          </div>
+        )}
       </div>
-    </SidebarProvider>
+
+      <Separator />
+
+      <div className="space-y-6">
+        {children}
+      </div>
+
+      {actions && (
+        <>
+          <Separator />
+          <div className="flex items-center justify-end space-x-2">
+            {actions}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
+
+export default PageLayout;
