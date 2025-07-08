@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Router, Route, Switch } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Toaster } from "@/components/ui/toaster";
@@ -72,59 +72,59 @@ function App() {
         <SidebarProvider>
           <Router>
             <div className="min-h-screen bg-background">
-              <Routes>
+              <Switch>
                 {/* Dashboard */}
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/" component={() => <Dashboard />} />
+                <Route path="/dashboard" component={() => <Dashboard />} />
 
                 {/* Catalog */}
-                <Route path="/catalog/products" element={<Products />} />
-                <Route path="/catalog/categories" element={<Categories />} />
-                <Route path="/catalog/manufacturers" element={<Manufacturers />} />
-                <Route path="/catalog/product-import" element={<ProductImport />} />
+                <Route path="/catalog/products" component={() => <Products />} />
+                <Route path="/catalog/categories" component={() => <Categories />} />
+                <Route path="/catalog/manufacturers" component={() => <Manufacturers />} />
+                <Route path="/catalog/product-import" component={() => <ProductImport />} />
 
                 {/* Sales */}
-                <Route path="/sales/orders" element={<Orders />} />
-                <Route path="/sales/returns" element={<Returns />} />
-                <Route path="/sales/coupons" element={<Coupons />} />
+                <Route path="/sales/orders" component={() => <Orders />} />
+                <Route path="/sales/returns" component={() => <Returns />} />
+                <Route path="/sales/coupons" component={() => <Coupons />} />
 
                 {/* Customers */}
-                <Route path="/customers" element={<Customers />} />
+                <Route path="/customers" component={() => <Customers />} />
 
                 {/* Journal */}
-                <Route path="/journal/layouts" element={<JournalLayouts />} />
-                <Route path="/journal/header" element={<JournalHeader />} />
-                <Route path="/journal/footer" element={<JournalFooter />} />
-                <Route path="/journal/modules" element={<JournalModules />} />
-                <Route path="/journal/skins" element={<JournalSkins />} />
-                <Route path="/journal/styles" element={<JournalStyles />} />
-                <Route path="/journal/variables" element={<JournalVariables />} />
-                <Route path="/journal/product-extras" element={<ProductExtras />} />
+                <Route path="/journal/layouts" component={() => <JournalLayouts />} />
+                <Route path="/journal/header" component={() => <JournalHeader />} />
+                <Route path="/journal/footer" component={() => <JournalFooter />} />
+                <Route path="/journal/modules" component={() => <JournalModules />} />
+                <Route path="/journal/skins" component={() => <JournalSkins />} />
+                <Route path="/journal/styles" component={() => <JournalStyles />} />
+                <Route path="/journal/variables" component={() => <JournalVariables />} />
+                <Route path="/journal/product-extras" component={() => <ProductExtras />} />
 
                 {/* Design */}
-                <Route path="/design/layouts" element={<DesignLayouts />} />
-                <Route path="/design/theme-editor" element={<ThemeEditor />} />
+                <Route path="/design/layouts" component={() => <DesignLayouts />} />
+                <Route path="/design/theme-editor" component={() => <ThemeEditor />} />
 
                 {/* Extensions */}
-                <Route path="/extensions" element={<Extensions />} />
-                <Route path="/extensions/modifications" element={<Modifications />} />
+                <Route path="/extensions" component={() => <Extensions />} />
+                <Route path="/extensions/modifications" component={() => <Modifications />} />
 
                 {/* System */}
-                <Route path="/system/settings" element={<Settings />} />
-                <Route path="/system/users" element={<Users />} />
+                <Route path="/system/settings" component={() => <Settings />} />
+                <Route path="/system/users" component={() => <Users />} />
 
                 {/* Marketing */}
-                <Route path="/marketing" element={<Marketing />} />
+                <Route path="/marketing" component={() => <Marketing />} />
 
                 {/* Reports */}
-                <Route path="/reports" element={<Reports />} />
+                <Route path="/reports" component={() => <Reports />} />
 
                 {/* Profile */}
-                <Route path="/profile" element={<AdminProfile />} />
+                <Route path="/profile" component={() => <AdminProfile />} />
 
                 {/* 404 */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                <Route component={() => <NotFound />} />
+              </Switch>
             </div>
           </Router>
         </SidebarProvider>
