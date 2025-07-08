@@ -146,10 +146,41 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Mobile specific fixes */
+  @media (max-width: 768px) {
+    input, select, textarea, button {
+      font-size: 16px !important;
+      -webkit-appearance: none;
+    }
+    
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 }
 
@@ -206,6 +237,95 @@
   .sidebar-active {
     background: hsl(var(--sidebar-primary));
     color: hsl(var(--sidebar-primary-foreground));
+  }
+
+  /* Mobile responsive fixes */
+  .mobile-container {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .mobile-safe-area {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .no-scroll-x {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Prevent overlapping on mobile */
+  @media (max-width: 768px) {
+    .mobile-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mobile-full-width {
+      width: 100% !important;
+      min-width: 0 !important;
+      flex: 1;
+    }
+
+    .mobile-text-sm {
+      font-size: 0.875rem !important;
+    }
+
+    .mobile-p-2 {
+      padding: 0.5rem !important;
+    }
+
+    .mobile-gap-2 {
+      gap: 0.5rem !important;
+    }
+
+    /* Fix table responsive */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    .table-container table {
+      min-width: 600px;
+    }
+
+    /* Fix form responsive */
+    .form-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+
+    /* Fix button responsive */
+    .button-group {
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+
+    .button-group > * {
+      width: 100% !important;
+    }
+  }
+
+  /* Extra small devices */
+  @media (max-width: 480px) {
+    .mobile-text-xs {
+      font-size: 0.75rem !important;
+    }
+
+    .mobile-p-1 {
+      padding: 0.25rem !important;
+    }
+
+    .mobile-gap-1 {
+      gap: 0.25rem !important;
+    }
   }
 }
 

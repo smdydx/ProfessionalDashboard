@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,9 +24,10 @@ export function PageLayout({
   headerActions
 }: PageLayoutProps) {
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+    <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <div className="flex items-center justify-between flex-wrap">
+        <div className="flex items-center space-x-2 sm:space-x-4 mb-2 sm:mb-0">
           {showBackButton && (
             <Button
               variant="outline"
@@ -39,9 +39,9 @@ export function PageLayout({
             </Button>
           )}
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{title}</h1>
             {description && (
-              <p className="text-muted-foreground mt-1">{description}</p>
+              <p className="text-muted-foreground mt-1 text-sm">{description}</p>
             )}
           </div>
         </div>
@@ -54,7 +54,7 @@ export function PageLayout({
 
       <Separator />
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {children}
       </div>
 
