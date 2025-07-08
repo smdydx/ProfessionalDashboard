@@ -1,474 +1,608 @@
 
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
 import { PageLayout } from "@/components/common/page-layout";
 import { DataTable } from "@/components/common/data-table";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useToast } from "@/hooks/use-toast";
-import { FolderOpen, Package, TrendingUp, Users } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Edit, Trash2, Plus, FolderTree, Eye, Move } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
-const categorySchema = z.object({
-  name: z.string().min(1, "Category name is required"),
-  description: z.string().optional(),
-  parentId: z.string().optional(),
-  status: z.enum(["active", "inactive"]),
-  sortOrder: z.number().min(0, "Sort order must be positive"),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional(),
-});
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  parentId: string | null;
+  status: "active" | "inactive";
+  sortOrder: number;
+  productCount: number;
+  metaTitle: string;
+  metaDescription: string;
+  image: string;
+  isDefault: boolean;
+  dateAdded: string;
+  lastModified: string;
+}
 
-type CategoryFormData = z.infer<typeof categorySchema>;
-
-const mockCategories = [
+const mockCategories: Category[] = [
   {
-    id: 1,
+    id: "1",
     name: "Electronics",
+    slug: "electronics",
     description: "Electronic devices and gadgets",
     parentId: null,
     status: "active",
     sortOrder: 1,
-    products: 156,
-    subcategories: 8,
-    metaTitle: "Electronics - Best Deals",
-    metaDescription: "Find the latest electronics and gadgets at best prices",
+    productCount: 45,
+    metaTitle: "Electronics - Best Electronic Devices",
+    metaDescription: "Shop the latest electronic devices and gadgets",
+    image: "/placeholder-category.jpg",
+    isDefault: false,
+    dateAdded: "2024-01-01",
+    lastModified: "2024-01-15"
   },
   {
-    id: 2,
+    id: "2",
     name: "Smartphones",
-    description: "Mobile phones and accessories",
-    parentId: 1,
+    slug: "smartphones",
+    description: "Latest smartphone models",
+    parentId: "1",
     status: "active",
     sortOrder: 1,
-    products: 45,
-    subcategories: 3,
-    metaTitle: "Smartphones - Latest Models",
-    metaDescription: "Shop latest smartphones from top brands",
+    productCount: 25,
+    metaTitle: "Smartphones - Latest Mobile Phones",
+    metaDescription: "Discover the latest smartphone models",
+    image: "/placeholder-category.jpg",
+    isDefault: false,
+    dateAdded: "2024-01-02",
+    lastModified: "2024-01-16"
   },
   {
-    id: 3,
+    id: "3",
     name: "Laptops",
-    description: "Laptops and computers",
-    parentId: 1,
+    slug: "laptops",
+    description: "High-performance laptops and notebooks",
+    parentId: "1",
     status: "active",
     sortOrder: 2,
-    products: 32,
-    subcategories: 2,
-    metaTitle: "Laptops - High Performance",
-    metaDescription: "Browse high-performance laptops for work and gaming",
+    productCount: 20,
+    metaTitle: "Laptops - High Performance Computing",
+    metaDescription: "Find the perfect laptop for your needs",
+    image: "/placeholder-category.jpg",
+    isDefault: false,
+    dateAdded: "2024-01-03",
+    lastModified: "2024-01-17"
   },
   {
-    id: 4,
-    name: "Clothing",
-    description: "Fashion and apparel",
+    id: "4",
+    name: "Home & Garden",
+    slug: "home-garden",
+    description: "Home improvement and garden supplies",
     parentId: null,
     status: "active",
     sortOrder: 2,
-    products: 234,
-    subcategories: 12,
-    metaTitle: "Clothing - Fashion Store",
-    metaDescription: "Latest fashion trends and clothing collections",
-  },
-  {
-    id: 5,
-    name: "Books",
-    description: "Books and literature",
-    parentId: null,
-    status: "inactive",
-    sortOrder: 3,
-    products: 89,
-    subcategories: 5,
-    metaTitle: "Books - Online Library",
-    metaDescription: "Explore vast collection of books and literature",
-  },
+    productCount: 30,
+    metaTitle: "Home & Garden - Improve Your Living Space",
+    metaDescription: "Everything you need for home and garden",
+    image: "/placeholder-category.jpg",
+    isDefault: true,
+    dateAdded: "2024-01-04",
+    lastModified: "2024-01-18"
+  }
 ];
 
 export default function Categories() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<any>(null);
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [formData, setFormData] = useState<Partial<Category>>({});
 
-  const { data: categories = mockCategories, isLoading } = useQuery({
-    queryKey: ["/api/categories"],
-    queryFn: () => Promise.resolve(mockCategories),
-  });
+  const getParentName = (parentId: string | null) => {
+    if (!parentId) return "Root";
+    const parent = categories.find(c => c.id === parentId);
+    return parent ? parent.name : "Unknown";
+  };
 
-  const form = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      parentId: "",
-      status: "active",
-      sortOrder: 1,
-      metaTitle: "",
-      metaDescription: "",
-    },
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (data: CategoryFormData) => {
-      return Promise.resolve({ ...data, id: Date.now() });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
-      setIsDialogOpen(false);
-      form.reset();
-      toast({ title: "Category created successfully" });
-    },
-    onError: () => {
-      toast({ title: "Failed to create category", variant: "destructive" });
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<CategoryFormData> }) => {
-      return Promise.resolve({ ...data, id });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
-      setIsDialogOpen(false);
-      setEditingCategory(null);
-      form.reset();
-      toast({ title: "Category updated successfully" });
-    },
-    onError: () => {
-      toast({ title: "Failed to update category", variant: "destructive" });
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => {
-      return Promise.resolve(id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/categories"] });
-      toast({ title: "Category deleted successfully" });
-    },
-    onError: () => {
-      toast({ title: "Failed to delete category", variant: "destructive" });
-    },
-  });
+  const getCategoryLevel = (category: Category, level = 0): number => {
+    if (!category.parentId) return level;
+    const parent = categories.find(c => c.id === category.parentId);
+    if (!parent) return level;
+    return getCategoryLevel(parent, level + 1);
+  };
 
   const columns = [
     {
       key: "name",
       header: "Category Name",
-      render: (value: string, item: any) => (
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
-            <FolderOpen className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="font-medium text-gray-900">{value}</p>
-            {item.parentId && (
-              <p className="text-sm text-gray-500">
-                Parent: {categories.find(c => c.id === item.parentId)?.name || "Unknown"}
-              </p>
+      render: (category: Category) => {
+        const level = getCategoryLevel(category);
+        const indent = "  ".repeat(level);
+        return (
+          <div className="flex items-center">
+            <span style={{ marginLeft: `${level * 20}px` }}>
+              {level > 0 && "└─ "}
+              <span className="font-medium">{category.name}</span>
+            </span>
+            {category.isDefault && (
+              <Badge variant="secondary" className="ml-2 text-xs">Default</Badge>
             )}
           </div>
-        </div>
+        );
+      },
+    },
+    {
+      key: "slug",
+      header: "Slug",
+      render: (category: Category) => (
+        <code className="text-sm bg-gray-100 px-2 py-1 rounded">
+          {category.slug}
+        </code>
       ),
     },
     {
-      key: "description",
-      header: "Description",
-      render: (value: string) => (
-        <p className="text-gray-600 max-w-xs truncate">{value || "No description"}</p>
+      key: "parent",
+      header: "Parent Category",
+      render: (category: Category) => (
+        <span className="text-sm text-gray-600">
+          {getParentName(category.parentId)}
+        </span>
       ),
     },
     {
-      key: "products",
+      key: "productCount",
       header: "Products",
-      render: (value: number) => (
-        <div className="flex items-center gap-1">
-          <Package className="w-4 h-4 text-blue-500" />
-          <span className="font-medium">{value}</span>
+      render: (category: Category) => (
+        <div className="text-center">
+          <Badge variant="outline">{category.productCount}</Badge>
         </div>
-      ),
-    },
-    {
-      key: "subcategories",
-      header: "Subcategories",
-      render: (value: number) => (
-        <div className="flex items-center gap-1">
-          <Users className="w-4 h-4 text-purple-500" />
-          <span className="font-medium">{value}</span>
-        </div>
-      ),
-    },
-    {
-      key: "status",
-      header: "Status",
-      render: (value: string) => (
-        <Badge variant={value === "active" ? "default" : "secondary"}>
-          {value}
-        </Badge>
       ),
     },
     {
       key: "sortOrder",
       header: "Sort Order",
-      render: (value: number) => (
-        <span className="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{value}</span>
+      render: (category: Category) => (
+        <div className="text-center">{category.sortOrder}</div>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      render: (category: Category) => (
+        <Badge variant={category.status === "active" ? "default" : "secondary"}>
+          {category.status}
+        </Badge>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (category: Category) => (
+        <div className="flex space-x-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleView(category)}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleEdit(category)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleAddSubcategory(category)}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+          {!category.isDefault && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDelete(category.id)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       ),
     },
   ];
 
-  const onSubmit = (data: CategoryFormData) => {
-    if (editingCategory) {
-      updateMutation.mutate({ id: editingCategory.id, data });
-    } else {
-      createMutation.mutate(data);
-    }
-  };
-
-  const handleEdit = (category: any) => {
-    setEditingCategory(category);
-    form.reset({
-      name: category.name,
-      description: category.description || "",
-      parentId: category.parentId?.toString() || "",
-      status: category.status,
-      sortOrder: category.sortOrder,
-      metaTitle: category.metaTitle || "",
-      metaDescription: category.metaDescription || "",
-    });
-    setIsDialogOpen(true);
-  };
-
-  const handleDelete = (category: any) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      deleteMutation.mutate(category.id);
-    }
-  };
-
-  const handleView = (category: any) => {
-    setSelectedCategory(category);
-  };
-
   const handleAdd = () => {
-    setEditingCategory(null);
-    form.reset();
-    setIsDialogOpen(true);
+    setFormData({});
+    setSelectedCategory(null);
+    setIsAddDialogOpen(true);
+  };
+
+  const handleAddSubcategory = (parentCategory: Category) => {
+    setFormData({ parentId: parentCategory.id });
+    setSelectedCategory(null);
+    setIsAddDialogOpen(true);
+  };
+
+  const handleEdit = (category: Category) => {
+    setSelectedCategory(category);
+    setFormData(category);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleView = (category: Category) => {
+    toast({
+      title: "Category Details",
+      description: `Viewing details for ${category.name}`,
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    const hasChildren = categories.some(c => c.parentId === id);
+    if (hasChildren) {
+      toast({
+        title: "Cannot Delete Category",
+        description: "This category has subcategories. Please delete subcategories first.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setCategories(categories.filter(c => c.id !== id));
+    toast({
+      title: "Category Deleted",
+      description: "Category has been deleted successfully.",
+    });
+  };
+
+  const handleSave = () => {
+    if (selectedCategory) {
+      // Edit existing category
+      setCategories(categories.map(c => 
+        c.id === selectedCategory.id 
+          ? { ...selectedCategory, ...formData, lastModified: new Date().toISOString().split('T')[0] }
+          : c
+      ));
+      setIsEditDialogOpen(false);
+      toast({
+        title: "Category Updated",
+        description: "Category has been updated successfully.",
+      });
+    } else {
+      // Add new category
+      const newCategory: Category = {
+        id: Date.now().toString(),
+        name: formData.name || "",
+        slug: formData.slug || formData.name?.toLowerCase().replace(/\s+/g, '-') || "",
+        description: formData.description || "",
+        parentId: formData.parentId || null,
+        status: formData.status || "active",
+        sortOrder: formData.sortOrder || 1,
+        productCount: 0,
+        metaTitle: formData.metaTitle || "",
+        metaDescription: formData.metaDescription || "",
+        image: "/placeholder-category.jpg",
+        isDefault: false,
+        dateAdded: new Date().toISOString().split('T')[0],
+        lastModified: new Date().toISOString().split('T')[0]
+      };
+      setCategories([...categories, newCategory]);
+      setIsAddDialogOpen(false);
+      toast({
+        title: "Category Added",
+        description: "New category has been added successfully.",
+      });
+    }
+    setFormData({});
+    setSelectedCategory(null);
   };
 
   const stats = [
-    { label: "Total Categories", value: categories.length },
-    { label: "Active Categories", value: categories.filter(c => c.status === "active").length },
-    { label: "Total Products", value: categories.reduce((sum, c) => sum + c.products, 0) },
-    { label: "Subcategories", value: categories.filter(c => c.parentId).length },
+    { label: "Total Categories", value: categories.length, variant: "default" as const },
+    { label: "Active Categories", value: categories.filter(c => c.status === "active").length, variant: "default" as const },
+    { label: "Root Categories", value: categories.filter(c => !c.parentId).length, variant: "secondary" as const },
+    { label: "Total Products", value: categories.reduce((sum, c) => sum + c.productCount, 0), variant: "default" as const },
   ];
 
-  const parentCategories = categories.filter(c => !c.parentId);
+  const getAvailableParents = () => {
+    if (selectedCategory) {
+      // When editing, exclude self and descendants to prevent circular references
+      return categories.filter(c => c.id !== selectedCategory.id && c.parentId !== selectedCategory.id);
+    }
+    return categories;
+  };
 
   return (
     <PageLayout
       title="Categories"
-      description="Manage your product categories and hierarchy"
-      onAdd={handleAdd}
-      addButtonText="Add Category"
+      description="Organize your products with hierarchical categories"
       breadcrumb={[
         { label: "Catalog", href: "/catalog" },
-        { label: "Categories" },
+        { label: "Categories" }
       ]}
+      onAdd={handleAdd}
+      addButtonText="Add Category"
       stats={stats}
     >
-      <Card className="shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FolderOpen className="w-5 h-5" />
+            <FolderTree className="h-5 w-5" />
             Category Management
           </CardTitle>
           <CardDescription>
-            Organize your products into categories and subcategories
+            Hierarchical category structure with drag-and-drop organization
           </CardDescription>
         </CardHeader>
         <CardContent>
           <DataTable
             data={categories}
             columns={columns}
-            onAdd={handleAdd}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onView={handleView}
-            isLoading={isLoading}
-            searchKey="name"
-            title="Categories"
+            searchPlaceholder="Search categories by name or description..."
+            exportFilename="categories"
+            filterOptions={[
+              {
+                key: "status",
+                label: "Status",
+                options: ["active", "inactive"]
+              },
+              {
+                key: "parentId",
+                label: "Type",
+                options: [
+                  { value: "null", label: "Root Categories" },
+                  { value: "hasParent", label: "Subcategories" }
+                ]
+              }
+            ]}
           />
         </CardContent>
       </Card>
 
-      {/* Add/Edit Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Add Category Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <FolderOpen className="w-5 h-5" />
-              {editingCategory ? "Edit Category" : "Add New Category"}
-            </DialogTitle>
+            <DialogTitle>Add New Category</DialogTitle>
+            <DialogDescription>
+              Create a new category to organize your products
+            </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter category name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="parentId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Parent Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select parent category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="">No Parent (Root Category)</SelectItem>
-                          {parentCategories.map((category) => (
-                            <SelectItem key={category.id} value={category.id.toString()}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="sortOrder"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sort Order</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="1"
-                          {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="name">Category Name</Label>
+                <Input
+                  id="name"
+                  value={formData.name || ""}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Enter category name"
                 />
               </div>
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter category description"
-                        {...field}
-                        rows={3}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <div>
+                <Label htmlFor="slug">Slug</Label>
+                <Input
+                  id="slug"
+                  value={formData.slug || ""}
+                  onChange={(e) => setFormData({...formData, slug: e.target.value})}
+                  placeholder="category-slug"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={formData.description || ""}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="Enter category description"
+                rows={3}
               />
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">SEO Settings</h3>
-                <div className="grid grid-cols-1 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="metaTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta Title</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter meta title" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="metaDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Meta Description</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Enter meta description"
-                            {...field}
-                            rows={2}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="parent">Parent Category</Label>
+                <Select
+                  value={formData.parentId || ""}
+                  onValueChange={(value) => setFormData({...formData, parentId: value || null})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select parent" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Root Category</SelectItem>
+                    {getAvailableParents().map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                  {editingCategory ? "Update" : "Create"} Category
-                </Button>
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select
+                  value={formData.status || "active"}
+                  onValueChange={(value) => setFormData({...formData, status: value as Category["status"]})}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            </form>
-          </Form>
+              <div>
+                <Label htmlFor="sortOrder">Sort Order</Label>
+                <Input
+                  id="sortOrder"
+                  type="number"
+                  value={formData.sortOrder || ""}
+                  onChange={(e) => setFormData({...formData, sortOrder: parseInt(e.target.value) || 0})}
+                  placeholder="1"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="metaTitle">Meta Title</Label>
+                <Input
+                  id="metaTitle"
+                  value={formData.metaTitle || ""}
+                  onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
+                  placeholder="SEO title"
+                />
+              </div>
+              <div>
+                <Label htmlFor="metaDescription">Meta Description</Label>
+                <Input
+                  id="metaDescription"
+                  value={formData.metaDescription || ""}
+                  onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
+                  placeholder="SEO description"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>Add Category</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Category Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Edit Category</DialogTitle>
+            <DialogDescription>
+              Update category information and settings
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-name">Category Name</Label>
+                <Input
+                  id="edit-name"
+                  value={formData.name || ""}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Enter category name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-slug">Slug</Label>
+                <Input
+                  id="edit-slug"
+                  value={formData.slug || ""}
+                  onChange={(e) => setFormData({...formData, slug: e.target.value})}
+                  placeholder="category-slug"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="edit-description">Description</Label>
+              <Textarea
+                id="edit-description"
+                value={formData.description || ""}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="Enter category description"
+                rows={3}
+              />
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="edit-parent">Parent Category</Label>
+                <Select
+                  value={formData.parentId || ""}
+                  onValueChange={(value) => setFormData({...formData, parentId: value || null})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select parent" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Root Category</SelectItem>
+                    {getAvailableParents().map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="edit-status">Status</Label>
+                <Select
+                  value={formData.status || "active"}
+                  onValueChange={(value) => setFormData({...formData, status: value as Category["status"]})}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="edit-sortOrder">Sort Order</Label>
+                <Input
+                  id="edit-sortOrder"
+                  type="number"
+                  value={formData.sortOrder || ""}
+                  onChange={(e) => setFormData({...formData, sortOrder: parseInt(e.target.value) || 0})}
+                  placeholder="1"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-metaTitle">Meta Title</Label>
+                <Input
+                  id="edit-metaTitle"
+                  value={formData.metaTitle || ""}
+                  onChange={(e) => setFormData({...formData, metaTitle: e.target.value})}
+                  placeholder="SEO title"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-metaDescription">Meta Description</Label>
+                <Input
+                  id="edit-metaDescription"
+                  value={formData.metaDescription || ""}
+                  onChange={(e) => setFormData({...formData, metaDescription: e.target.value})}
+                  placeholder="SEO description"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>Update Category</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </PageLayout>
