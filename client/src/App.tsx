@@ -43,12 +43,20 @@ import Modifications from "@/pages/extensions/modifications";
 // System
 import Settings from "@/pages/system/settings";
 import Users from "@/pages/system/users";
+import Newsletter from "@/pages/system/newsletter";
+import FormEmails from "@/pages/system/form-emails";
+import ImportExport from "@/pages/system/import-export";
+import SystemPage from "@/pages/system/system";
 
 // Marketing
 import Marketing from "@/pages/marketing/marketing";
+import MarketingCoupons from "@/pages/marketing/coupons";
+import Mail from "@/pages/marketing/mail";
 
 // Reports
 import Reports from "@/pages/reports/reports";
+import WhosOnline from "@/pages/reports/whos-online";
+import Statistics from "@/pages/reports/statistics";
 
 // Profile
 import AdminProfile from "@/pages/profile/admin-profile";
@@ -112,12 +120,20 @@ function App() {
                 {/* System */}
                 <Route path="/system/settings" component={() => <Settings />} />
                 <Route path="/system/users" component={() => <Users />} />
+                <Route path="/system/newsletter" component={() => <Newsletter />} />
+                <Route path="/system/form-emails" component={() => <FormEmails />} />
+                <Route path="/system/import-export" component={() => <ImportExport />} />
+                <Route path="/system/system" component={() => <SystemPage />} />
 
                 {/* Marketing */}
                 <Route path="/marketing" component={() => <Marketing />} />
+                <Route path="/marketing/coupons" component={() => <MarketingCoupons />} />
+                <Route path="/marketing/mail" component={() => <Mail />} />
 
                 {/* Reports */}
                 <Route path="/reports" component={() => <Reports />} />
+                <Route path="/reports/whos-online" component={() => <WhosOnline />} />
+                <Route path="/reports/statistics" component={() => <Statistics />} />
 
                 {/* Profile */}
                 <Route path="/profile" component={() => <AdminProfile />} />
