@@ -76,7 +76,7 @@ export default function StatsCards() {
         const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
         
         return (
-          <Card key={card.title} className="glass-card hover:glow-effect transition-all duration-300 hover:transform hover:scale-105 animate-float">
+          <Card key={card.title} className="glass-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -90,7 +90,7 @@ export default function StatsCards() {
                   )}
                   <p className="text-xs text-white/50 mt-1 hover:text-white/80 cursor-pointer transition-colors">View more...</p>
                 </div>
-                <div className={`w-12 h-12 bg-gradient-to-r ${card.gradient} rounded-lg flex items-center justify-center glow-effect animate-pulse-slow`}>
+                <div className={`w-12 h-12 bg-gradient-to-r ${card.gradient} rounded-lg flex items-center justify-center`}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
               </div>
