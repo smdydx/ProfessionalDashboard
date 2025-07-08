@@ -470,6 +470,36 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <nav className="space-y-2">
             {navigation.map((item) => renderNavItem(item))}
           </nav>
+
+          {/* Order Status Section at Bottom */}
+          <div className="mt-8 pt-6 border-t border-white/10">
+            <h3 className="text-sm font-semibold text-white/80 mb-4">Order Status</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                <span className="text-xs text-white/70">Orders Completed</span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-medium text-white">0%</span>
+                  <span className="text-xs text-white/50">0</span>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                <span className="text-xs text-white/70">Orders Processing</span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-medium text-white">0%</span>
+                  <span className="text-xs text-white/50">0</span>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                <span className="text-xs text-white/70">Other Statuses</span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-medium text-white">0%</span>
+                  <span className="text-xs text-white/50">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
