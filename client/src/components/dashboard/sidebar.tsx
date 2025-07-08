@@ -288,7 +288,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       if (isMobile && isOpen) {
         const sidebar = document.getElementById('sidebar');
         if (sidebar && !sidebar.contains(event.target as Node)) {
-          setIsOpen(false);
+          onClose();
         }
       }
     };
@@ -447,14 +447,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {isMobile && isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
-          onClick={() => setIsOpen(false)}
+          onClick={onClose}
         />
       )}
 
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onClose}
         className="md:hidden fixed top-4 left-4 z-[60] bg-green-600/20 hover:bg-green-600/30 text-white backdrop-blur-sm border border-white/10 transition-all duration-200 active:scale-95 touch-manipulation"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
