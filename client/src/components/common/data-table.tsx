@@ -78,15 +78,15 @@ export default function DataTable({
     <Card>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[640px]">
             <thead className="bg-gray-50 dark:bg-gray-800 border-b">
               <tr>
                 {columns.map((column) => (
-                  <th key={column.key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th key={column.key} className="px-3 sm:px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {column.header}
                   </th>
                 ))}
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-3 sm:px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -95,19 +95,19 @@ export default function DataTable({
               {data.map((item, index) => (
                 <tr key={item.id || index} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                   {columns.map((column) => (
-                    <td key={column.key} className="px-6 py-4 whitespace-nowrap">
+                    <td key={column.key} className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
                       {column.render ? column.render(item[column.key], item) : (
-                        <div className="text-sm text-gray-900 dark:text-gray-100">
+                        <div className="text-xs sm:text-sm text-gray-900 dark:text-gray-100 break-words">
                           {item[column.key]}
                         </div>
                       )}
                     </td>
                   ))}
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-right text-sm font-medium">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
+                        <Button variant="ghost" className="h-6 w-6 sm:h-8 sm:w-8 p-0">
+                          <MoreHorizontal className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

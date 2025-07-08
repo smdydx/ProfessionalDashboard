@@ -37,23 +37,23 @@ export default function Dashboard() {
       <div className="lg:ml-64">
         <Header onToggleSidebar={toggleSidebar} />
         
-        <main className="p-6 space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-3">
+        <main className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="xl:col-span-3">
               <StatsCards />
             </div>
-            <div className="lg:col-span-1">
+            <div className="xl:col-span-1">
               <OrdersStatus />
             </div>
           </div>
           
           <ChartsSection />
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
+            <div className="xl:col-span-2 order-2 xl:order-1">
               <DataTable />
             </div>
-            <div className="lg:col-span-1">
+            <div className="xl:col-span-1 order-1 xl:order-2">
               <RecentActivity />
             </div>
           </div>

@@ -63,26 +63,26 @@ export default function PageLayout({
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{title}</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white truncate">{title}</h1>
           {description && (
-            <p className="text-gray-600 dark:text-gray-400 mt-1">{description}</p>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">{description}</p>
           )}
         </div>
         {onAdd && (
-          <Button onClick={onAdd} className="flex items-center gap-2">
+          <Button onClick={onAdd} className="flex items-center gap-2 w-full sm:w-auto">
             <Plus className="w-4 h-4" />
-            {addButtonText}
+            <span className="sm:inline">{addButtonText}</span>
           </Button>
         )}
       </div>
 
       {/* Search and Filters */}
       {onSearchChange && (
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
@@ -92,9 +92,9 @@ export default function PageLayout({
               className="pl-10"
             />
           </div>
-          <Button variant="outline" className="flex items-center gap-2">
+          <Button variant="outline" className="flex items-center gap-2 justify-center sm:justify-start">
             <Filter className="w-4 h-4" />
-            Filter
+            <span>Filter</span>
           </Button>
         </div>
       )}

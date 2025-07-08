@@ -14,40 +14,41 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
 
   return (
     <header className="gradient-header shadow-sm sticky top-0 z-30">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center space-x-4">
-          {isMobile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onToggleSidebar}
-              className="lg:hidden text-white hover:bg-white/10"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          )}
-          <div>
-            <h2 className="text-xl font-semibold text-white">Dashboard Overview</h2>
-            <p className="text-sm text-white/70">Home / Dashboard</p>
+      <div className="flex items-center justify-between px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggleSidebar}
+            className="lg:hidden text-white hover:bg-white/10 flex-shrink-0"
+          >
+            <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+          </Button>
+          <div className="min-w-0">
+            <h2 className="text-lg sm:text-xl font-semibold text-white truncate">Dashboard Overview</h2>
+            <p className="text-xs sm:text-sm text-white/70 hidden sm:block">Home / Dashboard</p>
           </div>
         </div>
         
-        <div className="flex items-center space-x-4">
-          <div className="relative">
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="relative hidden md:block">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-white/60" />
             <Input
               type="search"
               placeholder="Search dashboard..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64 pl-10 bg-white/10 border-white/20 text-white placeholder-white/60 focus:ring-white/30 backdrop-blur-sm"
+              className="w-40 lg:w-64 pl-10 bg-white/10 border-white/20 text-white placeholder-white/60 focus:ring-white/30 backdrop-blur-sm text-sm"
             />
           </div>
-          <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 hover:scale-105 transition-all duration-300">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse-slow"></span>
+          <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
+            <Search className="h-4 w-4" />
           </Button>
-          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center glow-effect">
+          <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 hover:scale-105 transition-all duration-300">
+            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
+          </Button>
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
             <User className="w-4 h-4 text-white" />
           </div>
         </div>
