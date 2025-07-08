@@ -404,17 +404,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
       </div>
       
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-200 bg-white">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center">
-            <User className="w-4 h-4 text-slate-600" />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-800">Devendra Mishra</p>
-            <p className="text-xs text-slate-500">Admin</p>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 }
