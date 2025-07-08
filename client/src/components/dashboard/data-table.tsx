@@ -60,7 +60,7 @@ export default function DataTable() {
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <div className="min-w-[800px]">
@@ -176,7 +176,7 @@ export default function DataTable() {
             </table>
           </div>
         </div>
-        
+
         <div className="px-3 sm:px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-sm text-white/60">
             Showing {filteredOrders?.length || 0} results

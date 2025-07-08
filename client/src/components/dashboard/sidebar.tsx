@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Home, 
   Users, 
@@ -276,9 +276,24 @@ const navigation: NavigationItem[] = [
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const [location] = useLocation();
-  const isMobile = useIsMobile();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const location = useLocation();
+  const isMobile = useIsMobile();
+
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMobile && isOpen) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && !sidebar.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobile, isOpen]);
 
   const toggleExpansion = (itemName: string) => {
     setExpandedItems(prev => 
@@ -347,7 +362,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
           </Link>
         )}
-        
+
         {hasSubItems && isExpanded && (
           <div className="mt-1 space-y-1 animate-in slide-in-from-top-2 duration-200">
             {subItem.subItems!.map((nestedItem) => renderSubItem(nestedItem, level + 1))}
@@ -414,7 +429,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
           </Link>
         )}
-        
+
         {hasSubItems && isExpanded && (
           <div className="mt-2 space-y-1 animate-in slide-in-from-top-2 duration-200">
             {item.subItems!.map((subItem) => renderSubItem(subItem))}
@@ -425,27 +440,46 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   };
 
   return (
-    <div
-      className={cn(
-        "fixed left-0 top-0 h-full w-64 gradient-sidebar shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto",
-        isMobile && !isOpen && "-translate-x-full",
-        !isMobile && "translate-x-0"
+    <div className="relative">
+      {/* Mobile Overlay */}
+      {isMobile && isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+        />
       )}
-    >
-      <div className="p-6">
-        <div className="flex items-center space-x-3 mb-8">
-          <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center glow-effect animate-float">
-            <TrendingUp className="w-6 h-6 text-white" />
-          </div>
-          <h1 className="text-xl font-bold text-white text-gradient">OpenCart Admin</h1>
-        </div>
-        
-        <nav className="space-y-2">
-          {navigation.map((item) => renderNavItem(item))}
-        </nav>
-      </div>
-      
 
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setIsOpen(!isOpen)}
+        className="md:hidden fixed top-4 left-4 z-[60] bg-green-600/20 hover:bg-green-600/30 text-white backdrop-blur-sm border border-white/10 transition-all duration-200 active:scale-95 touch-manipulation"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
+      >
+        <Menu className="h-6 w-6" />
+      </Button>
+      
+      <div 
+        id="sidebar"
+        className={cn(
+          "fixed left-0 top-0 h-full w-64 gradient-sidebar shadow-lg transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto",
+          isMobile && !isOpen && "-translate-x-full",
+          !isMobile && "translate-x-0"
+        )}
+      >
+        <div className="p-6">
+          <div className="flex items-center space-x-3 mb-8">
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center glow-effect animate-float">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <h1 className="text-xl font-bold text-white text-gradient">OpenCart Admin</h1>
+          </div>
+
+          <nav className="space-y-2">
+            {navigation.map((item) => renderNavItem(item))}
+          </nav>
+        </div>
+      </div>
     </div>
   );
 }
