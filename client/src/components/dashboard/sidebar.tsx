@@ -294,29 +294,35 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const hasSubItems = subItem.subItems && subItem.subItems.length > 0;
     const indentClass = level === 1 ? "ml-4" : level === 2 ? "ml-8" : "ml-12";
 
+    const handleClick = () => {
+      if (hasSubItems) {
+        toggleExpansion(subItem.name);
+      } else {
+        if (isMobile) onClose();
+      }
+    };
+
+    const content = (
+      <div className="flex items-center space-x-3">
+        <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse-slow"></div>
+        <span>{subItem.name}</span>
+      </div>
+    );
+
     return (
       <div key={subItem.name}>
-        <div
-          className={cn(
-            "flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
-            indentClass,
-            isSubActive
-              ? "bg-white/15 text-white glow-effect"
-              : "text-white/70 hover:bg-white/5 hover:text-white"
-          )}
-          onClick={() => {
-            if (hasSubItems) {
-              toggleExpansion(subItem.name);
-            } else {
-              if (isMobile) onClose();
-            }
-          }}
-        >
-          <div className="flex items-center space-x-3">
-            <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse-slow"></div>
-            <span>{subItem.name}</span>
-          </div>
-          {hasSubItems && (
+        {hasSubItems ? (
+          <div
+            className={cn(
+              "flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
+              indentClass,
+              isSubActive
+                ? "bg-white/15 text-white glow-effect"
+                : "text-white/70 hover:bg-white/5 hover:text-white"
+            )}
+            onClick={handleClick}
+          >
+            {content}
             <div className="ml-auto">
               {isExpanded ? (
                 <ChevronDown className="w-3 h-3 transition-transform" />
@@ -324,8 +330,23 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <ChevronRight className="w-3 h-3 transition-transform" />
               )}
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <Link href={subItem.href}>
+            <div
+              className={cn(
+                "flex items-center justify-between px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
+                indentClass,
+                isSubActive
+                  ? "bg-white/15 text-white glow-effect"
+                  : "text-white/70 hover:bg-white/5 hover:text-white"
+              )}
+              onClick={handleClick}
+            >
+              {content}
+            </div>
+          </Link>
+        )}
         
         {hasSubItems && isExpanded && (
           <div className="mt-1 space-y-1 animate-in slide-in-from-top-2 duration-200">
@@ -342,28 +363,34 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const isExpanded = expandedItems.includes(item.name);
     const hasSubItems = item.subItems && item.subItems.length > 0;
 
+    const handleClick = () => {
+      if (hasSubItems) {
+        toggleExpansion(item.name);
+      } else {
+        if (isMobile) onClose();
+      }
+    };
+
+    const content = (
+      <div className="flex items-center space-x-3">
+        <Icon className="w-5 h-5" />
+        <span>{item.name}</span>
+      </div>
+    );
+
     return (
       <div key={item.name}>
-        <div
-          className={cn(
-            "flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
-            isActive
-              ? "bg-white/20 text-white glow-effect"
-              : "text-white/80 hover:bg-white/10 hover:text-white"
-          )}
-          onClick={() => {
-            if (hasSubItems) {
-              toggleExpansion(item.name);
-            } else {
-              if (isMobile) onClose();
-            }
-          }}
-        >
-          <div className="flex items-center space-x-3">
-            <Icon className="w-5 h-5" />
-            <span>{item.name}</span>
-          </div>
-          {hasSubItems && (
+        {hasSubItems ? (
+          <div
+            className={cn(
+              "flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
+              isActive
+                ? "bg-white/20 text-white glow-effect"
+                : "text-white/80 hover:bg-white/10 hover:text-white"
+            )}
+            onClick={handleClick}
+          >
+            {content}
             <div className="ml-auto">
               {isExpanded ? (
                 <ChevronDown className="w-4 h-4 transition-transform" />
@@ -371,8 +398,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <ChevronRight className="w-4 h-4 transition-transform" />
               )}
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <Link href={item.href}>
+            <div
+              className={cn(
+                "flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all duration-300 cursor-pointer hover:transform hover:scale-105",
+                isActive
+                  ? "bg-white/20 text-white glow-effect"
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
+              )}
+              onClick={handleClick}
+            >
+              {content}
+            </div>
+          </Link>
+        )}
         
         {hasSubItems && isExpanded && (
           <div className="mt-2 space-y-1 animate-in slide-in-from-top-2 duration-200">
