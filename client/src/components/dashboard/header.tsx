@@ -22,8 +22,8 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <header className="enterprise-header sticky top-0 z-40 w-full">
-      <div className="container flex h-14 md:h-16 items-center justify-between px-2 md:px-4 max-w-full">
+    <header className="ecom-header sticky top-0 z-40 w-full">
+      <div className="container flex h-16 md:h-18 items-center justify-between px-4 md:px-6 max-w-full backdrop-blur-sm">
         <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
           {isMobile && (
             <Button

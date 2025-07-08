@@ -454,17 +454,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div 
         id="sidebar"
         className={cn(
-          "fixed left-0 top-0 h-full w-64 enterprise-sidebar transform transition-all duration-300 ease-in-out z-50 overflow-y-auto",
+          "fixed left-0 top-0 h-full w-64 ecom-sidebar transform transition-all duration-500 ease-out z-50 overflow-y-auto",
           isMobile && !isOpen && "-translate-x-full",
           !isMobile && "translate-x-0"
         )}
       >
-        <div className="padding-enterprise">
-          <div className="flex items-center space-x-3 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md">
-              <TrendingUp className="w-6 h-6 text-white" />
+        <div className="padding-ecom">
+          <div className="flex items-center space-x-4 mb-8 animate-slide-in-left">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl animate-pulse-glow">
+              <TrendingUp className="w-7 h-7 text-white drop-shadow-lg" />
             </div>
-            <h1 className="text-enterprise-subheading text-slate-900 dark:text-slate-100">OpenCart Admin</h1>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">E-Commerce</h1>
+              <p className="text-xs text-slate-400 font-medium">Admin Dashboard</p>
+            </div>
           </div>
 
           <nav className="space-y-2">

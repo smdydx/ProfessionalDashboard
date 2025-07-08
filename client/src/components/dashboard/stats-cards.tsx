@@ -69,31 +69,37 @@ export default function StatsCards() {
   }
 
   return (
-    <div className="grid-enterprise-stats">
-      {cards.map((card) => {
+    <div className="grid-ecom-stats">
+      {cards.map((card, index) => {
         const Icon = card.icon;
         const ChangeIcon = card.changeType === "positive" ? ArrowUp : ArrowDown;
-        const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-gray-600";
+        const changeColor = card.changeType === "positive" ? "text-green-600" : card.changeType === "negative" ? "text-red-600" : "text-amber-600";
         
         return (
-          <Card key={card.title} className="enterprise-card-elevated">
-            <CardContent className="padding-enterprise-compact">
+          <Card 
+            key={card.title} 
+            className="ecom-card-gradient hover-float animate-bounce-in" 
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <CardContent className="padding-ecom-compact">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <p className="text-enterprise-caption">{card.title}</p>
-                  <p className="text-enterprise-heading mt-1">{card.value}</p>
-                  <div className={`flex items-center text-sm mt-2 ${changeColor} font-medium`}>
-                    <ChangeIcon className="w-4 h-4 mr-1" />
-                    {card.change}
+                  <p className="text-ecom-caption text-slate-600 dark:text-slate-400">{card.title}</p>
+                  <p className="text-ecom-heading text-slate-800 dark:text-slate-100 mt-2">{card.value}</p>
+                  <div className={`flex items-center text-sm mt-3 ${changeColor} font-bold`}>
+                    <ChangeIcon className="w-4 h-4 mr-2" />
+                    <span className="bg-gradient-to-r from-current to-current bg-clip-text">{card.change}</span>
                   </div>
                 </div>
                 <div className={`
-                  w-12 h-12 rounded-lg 
-                  bg-gradient-to-r ${card.bgGradient}
+                  w-16 h-16 rounded-2xl 
+                  bg-gradient-to-br ${card.bgGradient}
                   flex items-center justify-center
-                  transition-all duration-200
+                  transition-all duration-500 hover:scale-110 hover:rotate-6
+                  shadow-lg hover:shadow-xl
+                  animate-pulse-glow
                 `}>
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-8 h-8 text-white drop-shadow-lg" />
                 </div>
               </div>
             </CardContent>

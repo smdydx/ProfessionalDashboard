@@ -4,61 +4,60 @@
 
 @layer base {
   :root {
-    /* Enterprise-grade color system */
-    --background: 248 250 252;
+    /* E-commerce Color Palette */
+    --background: 248 251 255;
     --foreground: 15 23 42;
     --card: 255 255 255;
     --card-foreground: 15 23 42;
     --popover: 255 255 255;
     --popover-foreground: 15 23 42;
-    --primary: 37 99 235;
+    --primary: 59 130 246;
     --primary-foreground: 255 255 255;
     --secondary: 241 245 249;
     --secondary-foreground: 51 65 85;
-    --muted: 248 250 252;
+    --muted: 248 251 255;
     --muted-foreground: 100 116 139;
-    --accent: 240 249 255;
-    --accent-foreground: 30 64 175;
-    --destructive: 220 38 38;
+    --accent: 254 240 138;
+    --accent-foreground: 146 64 14;
+    --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
     --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 37 99 235;
-    --radius: 0.375rem;
+    --input: 241 245 249;
+    --ring: 59 130 246;
+    --radius: 0.75rem;
 
-    /* Enterprise theme colors */
-    --enterprise-blue: 37 99 235;
-    --enterprise-navy: 30 58 138;
-    --enterprise-gray: 71 85 105;
-    --enterprise-light: 248 250 252;
-    --enterprise-dark: 15 23 42;
-    
-    /* Professional shadows */
-    --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-enterprise: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* E-commerce Brand Colors */
+    --ecommerce-primary: 59 130 246;    /* Flipkart Blue */
+    --ecommerce-secondary: 16 185 129;  /* Fresh Green */
+    --ecommerce-accent: 245 101 101;    /* Coral Red */
+    --ecommerce-warning: 251 191 36;    /* Amber */
+    --ecommerce-success: 34 197 94;     /* Success Green */
+    --ecommerce-purple: 147 51 234;     /* Purple */
+    --ecommerce-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --ecommerce-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --ecommerce-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --ecommerce-gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   }
 
   .dark {
-    --background: 15 23 42;
-    --foreground: 241 245 249;
-    --card: 30 41 59;
-    --card-foreground: 241 245 249;
-    --popover: 30 41 59;
-    --popover-foreground: 241 245 249;
+    --background: 2 6 23;
+    --foreground: 248 250 252;
+    --card: 15 23 42;
+    --card-foreground: 248 250 252;
+    --popover: 15 23 42;
+    --popover-foreground: 248 250 252;
     --primary: 99 102 241;
     --primary-foreground: 15 23 42;
-    --secondary: 51 65 85;
+    --secondary: 30 41 59;
     --secondary-foreground: 203 213 225;
-    --muted: 51 65 85;
+    --muted: 30 41 59;
     --muted-foreground: 148 163 184;
-    --accent: 51 65 85;
+    --accent: 30 41 59;
     --accent-foreground: 129 140 248;
     --destructive: 239 68 68;
-    --destructive-foreground: 15 23 42;
-    --border: 51 65 85;
-    --input: 51 65 85;
+    --destructive-foreground: 248 250 252;
+    --border: 30 41 59;
+    --input: 30 41 59;
     --ring: 99 102 241;
   }
 
@@ -67,299 +66,476 @@
   }
 
   body {
-    background-color: hsl(var(--background));
+    background: linear-gradient(135deg, #f8fbff 0%, #f1f5f9 100%);
     color: hsl(var(--foreground));
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     font-feature-settings: "cv03", "cv04", "cv11";
-    line-height: 1.5;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom scrollbar */
+  /* Enhanced Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
     background: hsl(var(--muted));
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted-foreground));
-    border-radius: 3px;
+    background: linear-gradient(135deg, hsl(var(--ecommerce-primary)), hsl(var(--ecommerce-secondary)));
+    border-radius: 4px;
+    transition: all 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary));
+    background: linear-gradient(135deg, hsl(var(--ecommerce-secondary)), hsl(var(--ecommerce-accent)));
   }
 }
 
 @layer components {
-  /* Enterprise Card System */
-  .enterprise-card {
-    @apply bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 transition-all duration-200;
+  /* E-commerce Card System */
+  .ecom-card {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
 
-  .enterprise-card-elevated {
-    @apply enterprise-card shadow-md hover:shadow-lg;
+  .ecom-card-flat {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200;
   }
 
-  .enterprise-card-interactive {
-    @apply enterprise-card-elevated hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer;
+  .ecom-card-gradient {
+    @apply bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700 rounded-xl shadow-lg border border-blue-100 dark:border-slate-600 transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
   }
 
-  /* Professional Sidebar */
-  .enterprise-sidebar {
-    @apply bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-lg;
+  .ecom-card-premium {
+    @apply bg-gradient-to-br from-white via-indigo-50/40 to-purple-50/30 backdrop-blur-sm rounded-2xl shadow-xl border border-indigo-100 transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] hover:rotate-1;
   }
 
-  .enterprise-nav-item {
-    @apply flex items-center px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-md transition-all duration-150;
+  /* Modern Sidebar */
+  .ecom-sidebar {
+    @apply bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 backdrop-blur-xl border-r border-slate-700/50 shadow-2xl;
   }
 
-  .enterprise-nav-item-active {
-    @apply enterprise-nav-item bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-r-2 border-blue-600;
+  .ecom-nav-item {
+    @apply flex items-center px-4 py-3 mx-2 text-sm font-medium text-slate-300 rounded-xl transition-all duration-300 group relative overflow-hidden;
   }
 
-  .enterprise-nav-item-hover {
-    @apply enterprise-nav-item hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100;
+  .ecom-nav-item-active {
+    @apply ecom-nav-item bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transform scale-[1.02];
   }
 
-  /* Professional Header */
-  .enterprise-header {
-    @apply bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm;
+  .ecom-nav-item-hover {
+    @apply ecom-nav-item hover:bg-gradient-to-r hover:from-slate-700 hover:to-slate-600 hover:text-white hover:shadow-md hover:scale-[1.01] hover:translate-x-1;
   }
 
-  /* Data Tables */
-  .enterprise-table {
-    @apply w-full border-collapse bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-sm;
+  /* Vibrant Header */
+  .ecom-header {
+    @apply bg-gradient-to-r from-white via-blue-50/80 to-purple-50/60 backdrop-blur-xl border-b border-blue-100 shadow-lg;
   }
 
-  .enterprise-table-header {
-    @apply bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700;
+  /* Enhanced Tables */
+  .ecom-table {
+    @apply w-full border-collapse bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl;
   }
 
-  .enterprise-table-row {
-    @apply border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors;
+  .ecom-table-header {
+    @apply bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-700 dark:to-slate-600 border-b border-blue-100 dark:border-slate-600;
   }
 
-  .enterprise-table-cell {
-    @apply px-4 py-3 text-sm text-slate-900 dark:text-slate-100;
+  .ecom-table-row {
+    @apply border-b border-slate-50 dark:border-slate-700 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent dark:hover:from-slate-700/50 transition-all duration-300;
   }
 
-  .enterprise-table-header-cell {
-    @apply enterprise-table-cell font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-xs;
+  .ecom-table-cell {
+    @apply px-6 py-4 text-sm text-slate-700 dark:text-slate-200;
   }
 
-  /* Buttons */
-  .enterprise-button-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  .ecom-table-header-cell {
+    @apply ecom-table-cell font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider text-xs;
   }
 
-  .enterprise-button-secondary {
-    @apply bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-md border border-slate-300 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  /* E-commerce Buttons */
+  .ecom-btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] transform;
   }
 
-  .enterprise-button-ghost {
-    @apply text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 font-medium px-3 py-2 rounded-md transition-colors;
+  .ecom-btn-secondary {
+    @apply bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 font-semibold px-6 py-3 rounded-xl border border-slate-200 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02];
   }
 
-  /* Form Controls */
-  .enterprise-input {
-    @apply block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100;
+  .ecom-btn-success {
+    @apply bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
   }
 
-  .enterprise-select {
-    @apply enterprise-input appearance-none bg-no-repeat bg-right;
+  .ecom-btn-danger {
+    @apply bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
   }
 
-  /* Status Indicators */
-  .status-success {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300;
+  .ecom-btn-ghost {
+    @apply text-slate-600 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-50 dark:text-slate-300 dark:hover:from-slate-700 dark:hover:to-slate-600 font-medium px-4 py-2 rounded-xl transition-all duration-300 hover:scale-[1.02];
   }
 
-  .status-warning {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300;
+  /* Enhanced Form Controls */
+  .ecom-input {
+    @apply block w-full px-4 py-3 border border-slate-200 dark:border-slate-600 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 transition-all duration-300;
   }
 
-  .status-error {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300;
+  .ecom-input:focus {
+    @apply shadow-lg scale-[1.01] bg-blue-50/50 dark:bg-slate-700/50;
   }
 
-  .status-info {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300;
+  /* Status Badges */
+  .status-success-ecom {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 shadow-sm;
   }
 
-  /* Animations */
-  .fade-in-enterprise {
-    animation: fadeInEnterprise 0.3s ease-out;
+  .status-warning-ecom {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-800 border border-yellow-200 shadow-sm;
   }
 
-  .slide-down-enterprise {
-    animation: slideDownEnterprise 0.2s ease-out;
+  .status-error-ecom {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200 shadow-sm;
   }
 
-  @keyframes fadeInEnterprise {
+  .status-info-ecom {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 border border-blue-200 shadow-sm;
+  }
+
+  /* Floating Action Buttons */
+  .fab-ecom {
+    @apply fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-3xl z-50;
+  }
+
+  /* Loading Animations */
+  .loading-shimmer {
+    @apply animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 rounded-xl;
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Page Transitions */
+  .page-transition {
+    animation: pageSlideIn 0.5s ease-out;
+  }
+
+  @keyframes pageSlideIn {
     from {
       opacity: 0;
-      transform: translateY(-4px);
+      transform: translateY(20px) scale(0.98);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
 
-  @keyframes slideDownEnterprise {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Hover Animations */
+  .hover-float {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  }
+
+  /* Notification Toast */
+  .toast-ecom {
+    @apply bg-gradient-to-r from-white to-blue-50 border border-blue-200 rounded-xl shadow-xl backdrop-blur-sm;
   }
 }
 
 @layer utilities {
-  /* Professional Typography */
-  .text-enterprise-heading {
-    @apply text-2xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight;
+  /* E-commerce Typography */
+  .text-ecom-hero {
+    @apply text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent;
   }
 
-  .text-enterprise-subheading {
-    @apply text-lg font-medium text-slate-700 dark:text-slate-300;
+  .text-ecom-heading {
+    @apply text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight;
   }
 
-  .text-enterprise-body {
-    @apply text-sm text-slate-600 dark:text-slate-400;
+  .text-ecom-subheading {
+    @apply text-lg md:text-xl font-semibold text-slate-700 dark:text-slate-300;
   }
 
-  .text-enterprise-caption {
-    @apply text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wide font-medium;
+  .text-ecom-body {
+    @apply text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed;
   }
 
-  /* Professional Spacing */
-  .space-enterprise {
+  .text-ecom-caption {
+    @apply text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase tracking-wider;
+  }
+
+  /* E-commerce Spacing */
+  .space-ecom {
+    @apply space-y-8;
+  }
+
+  .space-ecom-compact {
     @apply space-y-6;
   }
 
-  .space-enterprise-compact {
-    @apply space-y-4;
+  .padding-ecom {
+    @apply p-6 md:p-8;
   }
 
-  .padding-enterprise {
-    @apply p-6;
+  .padding-ecom-compact {
+    @apply p-4 md:p-6;
   }
 
-  .padding-enterprise-compact {
-    @apply p-4;
+  /* Responsive Grids */
+  .grid-ecom-dashboard {
+    @apply grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6;
   }
 
-  /* Professional Borders */
-  .border-enterprise {
-    @apply border border-slate-200 dark:border-slate-700;
+  .grid-ecom-stats {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6;
   }
 
-  .border-enterprise-subtle {
-    @apply border border-slate-100 dark:border-slate-800;
+  .grid-ecom-cards {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
   }
 
-  /* Professional Shadows */
-  .shadow-enterprise-subtle {
-    box-shadow: var(--shadow-subtle);
+  /* Custom Shadows */
+  .shadow-ecom-soft {
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06);
   }
 
-  .shadow-enterprise-medium {
-    box-shadow: var(--shadow-medium);
+  .shadow-ecom-medium {
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
   }
 
-  .shadow-enterprise-large {
-    box-shadow: var(--shadow-large);
+  .shadow-ecom-large {
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
   }
 
-  .shadow-enterprise-xl {
-    box-shadow: var(--shadow-enterprise);
+  .shadow-ecom-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
 
-  /* Responsive Utilities */
+  /* Mobile Optimizations */
   .mobile-stack {
-    @apply flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3;
+    @apply flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4;
   }
 
   .mobile-hide {
-    @apply hidden sm:block;
+    @apply hidden md:block;
+  }
+
+  .mobile-show {
+    @apply block md:hidden;
   }
 
   .mobile-full {
     @apply w-full sm:w-auto;
   }
 
-  /* Enterprise Grid */
-  .grid-enterprise-dashboard {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  /* Responsive Text */
+  .responsive-text {
+    @apply text-sm sm:text-base lg:text-lg;
   }
 
-  .grid-enterprise-cards {
-    @apply grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6;
+  /* Brand Gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   }
 
-  .grid-enterprise-stats {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  .gradient-secondary {
+    background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  }
+
+  .gradient-purple {
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
   }
 }
 
-/* Print Styles */
+/* Advanced Animations */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(100px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-30px);
+  }
+  70% {
+    transform: scale(0.9) translateY(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Print Optimizations */
 @media print {
   .no-print {
     @apply hidden;
   }
 
-  .enterprise-card {
+  .ecom-card {
     @apply shadow-none border border-slate-300;
   }
 
-  .enterprise-sidebar {
+  .ecom-sidebar {
     @apply hidden;
+  }
+
+  .gradient-primary,
+  .gradient-secondary,
+  .gradient-accent {
+    background: #f8fafc !important;
+    color: #1e293b !important;
   }
 }
 
-/* Mobile Optimizations */
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .ecom-card {
+    @apply border-2 border-slate-400;
+  }
+
+  .ecom-nav-item-active {
+    @apply border-2 border-blue-600;
+  }
+}
+
+/* Focus Styles for Better Accessibility */
+.ecom-btn-primary:focus-visible,
+.ecom-btn-secondary:focus-visible,
+.ecom-input:focus-visible {
+  @apply ring-4 ring-blue-500/30 ring-offset-2 outline-none;
+}
+
+/* Ultra-wide Screen Support */
+@media (min-width: 1536px) {
+  .padding-ecom {
+    @apply p-10;
+  }
+
+  .grid-ecom-dashboard {
+    @apply grid-cols-5;
+  }
+}
+
+/* Mobile-first Responsive Breakpoints */
 @media (max-width: 640px) {
-  .enterprise-table {
+  .ecom-table {
     @apply text-xs;
   }
 
-  .enterprise-nav-item {
-    @apply px-2 py-3;
+  .ecom-nav-item {
+    @apply px-3 py-2;
   }
 
-  .padding-enterprise {
+  .padding-ecom {
     @apply p-4;
   }
 
-  .padding-enterprise-compact {
-    @apply p-3;
+  .text-ecom-hero {
+    @apply text-2xl;
+  }
+
+  .text-ecom-heading {
+    @apply text-xl;
   }
 }
 
-/* Focus Styles for Accessibility */
-.enterprise-button-primary:focus-visible,
-.enterprise-button-secondary:focus-visible,
-.enterprise-input:focus-visible {
-  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .enterprise-card {
-    @apply border-2;
+/* Tablet Optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-ecom-dashboard {
+    @apply grid-cols-2;
   }
 
-  .enterprise-nav-item-active {
-    @apply border-r-4;
+  .grid-ecom-stats {
+    @apply grid-cols-2;
   }
 }

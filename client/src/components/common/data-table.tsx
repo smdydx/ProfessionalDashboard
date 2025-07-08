@@ -93,9 +93,9 @@ export function DataTable({
   }
 
   return (
-    <div className="w-full space-enterprise fade-in-enterprise">
+    <div className="w-full space-ecom page-transition">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 enterprise-card padding-enterprise-compact">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ecom-card-flat padding-ecom-compact">
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -103,22 +103,22 @@ export function DataTable({
               placeholder={`Search ${title.toLowerCase()}...`}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="pl-10 w-80"
+              className="ecom-input pl-12 w-80"
             />
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="ecom-btn-secondary">
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </Button>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="sm" className="ecom-btn-secondary">
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
           {onAdd && (
-            <Button onClick={onAdd} size="sm">
+            <Button onClick={onAdd} size="sm" className="ecom-btn-primary">
               <Plus className="h-4 w-4 mr-2" />
               Add New
             </Button>
@@ -127,17 +127,17 @@ export function DataTable({
       </div>
 
       {/* Table Section */}
-      <div className="enterprise-card overflow-hidden">
-        <Table className="enterprise-table">
-          <TableHeader className="enterprise-table-header">
+      <div className="ecom-card overflow-hidden">
+        <Table className="ecom-table">
+          <TableHeader className="ecom-table-header">
             <TableRow>
               {columns.map((column) => (
-                <TableHead key={column.key} className="enterprise-table-header-cell">
+                <TableHead key={column.key} className="ecom-table-header-cell">
                   {column.header}
                 </TableHead>
               ))}
               {showActions && (
-                <TableHead className="enterprise-table-header-cell text-right">
+                <TableHead className="ecom-table-header-cell text-right">
                   Actions
                 </TableHead>
               )}
@@ -146,9 +146,9 @@ export function DataTable({
           <TableBody>
             {paginatedData.length > 0 ? (
               paginatedData.map((item, index) => (
-                <TableRow key={item.id || index} className="enterprise-table-row">
+                <TableRow key={item.id || index} className="ecom-table-row">
                   {columns.map((column) => (
-                    <TableCell key={column.key} className="enterprise-table-cell">
+                    <TableCell key={column.key} className="ecom-table-cell">
                       {renderCell(item, column)}
                     </TableCell>
                   ))}
