@@ -25,7 +25,7 @@ interface DataTableProps {
   isLoading?: boolean;
 }
 
-export default function DataTable({ 
+function DataTable({ 
   data, 
   columns, 
   onEdit, 
@@ -141,3 +141,6 @@ export default function DataTable({
     </Card>
   );
 }
+
+export default DataTable;
+export { DataTable };

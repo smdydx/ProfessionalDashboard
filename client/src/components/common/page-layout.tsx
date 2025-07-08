@@ -104,3 +104,5 @@ export default function PageLayout({
     </div>
   );
 }
+
+export { PageLayout };
