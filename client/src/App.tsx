@@ -86,6 +86,29 @@ import Reports from "@/pages/reports/reports";
 import WhosOnline from "@/pages/reports/whos-online";
 import Statistics from "@/pages/reports/statistics";
 
+// Extensions Events
+import ExtensionEvents from "@/pages/extensions/events";
+
+// Product Import
+import PriceManagement from "@/pages/product-import/price-management";
+import ExportImport from "@/pages/product-import/export-import";
+import InventoryUpdate from "@/pages/product-import/inventory-update";
+
+// System Users
+import SystemUsers from "@/pages/system/users/users";
+import UserGroups from "@/pages/system/users/user-groups";
+import SystemAPI from "@/pages/system/users/api";
+
+// System Localisation
+import StoreLocation from "@/pages/system/localisation/store-location";
+import Languages from "@/pages/system/localisation/languages";
+import Currencies from "@/pages/system/localisation/currencies";
+
+// Price Management
+import OrdersCompleted from "@/pages/price-management/orders-completed";
+import OrdersProcessing from "@/pages/price-management/orders-processing";
+import OtherOrder from "@/pages/price-management/other-order";
+
 // Profile
 import AdminProfile from "@/pages/profile/admin-profile";
 
@@ -173,15 +196,33 @@ function App() {
 
                 {/* Extensions */}
                 <Route path="/extensions" component={() => <Extensions />} />
+                <Route path="/extensions/extensions" component={() => <Extensions />} />
                 <Route path="/extensions/modifications" component={() => <Modifications />} />
+                <Route path="/extensions/events" component={() => <ExtensionEvents />} />
+
+                {/* Product Import */}
+                <Route path="/product-import/price-management" component={() => <PriceManagement />} />
+                <Route path="/product-import/export-import" component={() => <ExportImport />} />
+                <Route path="/product-import/inventory-update" component={() => <InventoryUpdate />} />
 
                 {/* System */}
                 <Route path="/system/settings" component={() => <Settings />} />
                 <Route path="/system/users" component={() => <Users />} />
+                <Route path="/system/users/users" component={() => <SystemUsers />} />
+                <Route path="/system/users/user-groups" component={() => <UserGroups />} />
+                <Route path="/system/users/api" component={() => <SystemAPI />} />
+                <Route path="/system/localisation/store-location" component={() => <StoreLocation />} />
+                <Route path="/system/localisation/languages" component={() => <Languages />} />
+                <Route path="/system/localisation/currencies" component={() => <Currencies />} />
                 <Route path="/system/newsletter" component={() => <Newsletter />} />
                 <Route path="/system/form-emails" component={() => <FormEmails />} />
                 <Route path="/system/import-export" component={() => <ImportExport />} />
                 <Route path="/system/system" component={() => <SystemPage />} />
+
+                {/* Price Management */}
+                <Route path="/price-management/orders-completed" component={() => <OrdersCompleted />} />
+                <Route path="/price-management/orders-processing" component={() => <OrdersProcessing />} />
+                <Route path="/price-management/other-order" component={() => <OtherOrder />} />
 
                 {/* Marketing */}
                 <Route path="/marketing" component={() => <Marketing />} />
