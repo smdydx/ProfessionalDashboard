@@ -43,7 +43,24 @@ interface NavigationItem {
 
 const navigation: NavigationItem[] = [
   { name: "Dashboard", href: "/", icon: Home, current: true },
-  { name: "Journal", href: "/journal", icon: BookOpen, current: false },
+  { 
+    name: "Journal", 
+    href: "/journal", 
+    icon: BookOpen, 
+    current: false,
+    subItems: [
+      { name: "Variables", href: "/journal/variables", current: false },
+      { name: "Styles", href: "/journal/styles", current: false },
+      { name: "Skins", href: "/journal/skins", current: false },
+      { name: "Header", href: "/journal/header", current: false },
+      { name: "Footer", href: "/journal/footer", current: false },
+      { name: "Layouts", href: "/journal/layouts", current: false },
+      { name: "Modules", href: "/journal/modules", current: false },
+      { name: "Product Extras", href: "/journal/product-extras", current: false },
+      { name: "Blog", href: "/journal/blog", current: false },
+      { name: "System", href: "/journal/system", current: false }
+    ]
+  },
   { 
     name: "Catalog", 
     href: "/catalog", 
@@ -62,7 +79,17 @@ const navigation: NavigationItem[] = [
       { name: "Information", href: "/catalog/information", current: false }
     ]
   },
-  { name: "Product Import", href: "/product-import", icon: Upload, current: false },
+  { 
+    name: "Product Import", 
+    href: "/product-import", 
+    icon: Upload, 
+    current: false,
+    subItems: [
+      { name: "Price Management", href: "/product-import/price-management", current: false },
+      { name: "Export / Import", href: "/product-import/export-import", current: false },
+      { name: "Inventory Qty or Price Update", href: "/product-import/inventory-update", current: false }
+    ]
+  },
   { 
     name: "Extensions", 
     href: "/extensions", 
@@ -146,7 +173,7 @@ const navigation: NavigationItem[] = [
       { name: "Marketing", href: "/reports/marketing", current: false }
     ]
   },
-  { name: "Price Management", href: "/price-management", icon: Tag, current: false },
+
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {

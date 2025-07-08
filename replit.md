@@ -104,4 +104,6 @@ Changelog:
 
 ```
 Preferred communication style: Simple, everyday language.
+Design requirements: OpenCart-style admin dashboard with comprehensive navigation menu system.
+Navigation structure: Multi-level menu with expandable sub-menus for Journal, Catalog, Product Import, Extensions, Design, Sales, Customers, Marketing, System, and Reports.
 ```
