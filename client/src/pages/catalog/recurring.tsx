@@ -96,3 +96,65 @@ export default function RecurringProfiles() {
     </PageLayout>
   );
 }
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Edit, Trash2, RefreshCw } from "lucide-react";
+
+export default function Recurring() {
+  return (
+    <div className="flex-1 space-y-4 p-4 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Recurring Products</h2>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Recurring Product
+        </Button>
+      </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Recurring Products List</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <RefreshCw className="h-5 w-5 text-blue-500" />
+                <div>
+                  <h4 className="font-medium">Monthly Subscription Box</h4>
+                  <p className="text-sm text-muted-foreground">Recurring monthly - $29.99</p>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button variant="outline" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <RefreshCw className="h-5 w-5 text-green-500" />
+                <div>
+                  <h4 className="font-medium">Weekly Delivery</h4>
+                  <p className="text-sm text-muted-foreground">Recurring weekly - $15.99</p>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button variant="outline" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

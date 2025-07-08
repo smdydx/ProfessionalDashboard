@@ -15,14 +15,24 @@ import ProductImport from "@/pages/catalog/product-import";
 import Downloads from "@/pages/catalog/downloads";
 import Reviews from "@/pages/catalog/reviews";
 import Information from "@/pages/catalog/information";
+import Attributes from "@/pages/catalog/attributes";
+import Options from "@/pages/catalog/options";
+import Filters from "@/pages/catalog/filters";
+import Recurring from "@/pages/catalog/recurring";
 
 // Sales
 import Orders from "@/pages/sales/orders";
 import Returns from "@/pages/sales/returns";
 import Coupons from "@/pages/sales/coupons";
+import RecurringOrders from "@/pages/sales/recurring-orders";
+import Vouchers from "@/pages/sales/vouchers/vouchers";
+import VoucherThemes from "@/pages/sales/vouchers/themes";
 
 // Customers
 import Customers from "@/pages/customers/customers";
+import CustomerGroups from "@/pages/customers/groups";
+import CustomerApprovals from "@/pages/customers/approvals";
+import CustomFields from "@/pages/customers/custom-fields";
 
 // Journal
 import JournalLayouts from "@/pages/journal/layouts";
@@ -50,6 +60,9 @@ import JournalSystem from "@/pages/journal/system/system";
 // Design
 import DesignLayouts from "@/pages/design/layouts";
 import ThemeEditor from "@/pages/design/theme-editor";
+import LanguageEditor from "@/pages/design/language-editor";
+import Banners from "@/pages/design/banners";
+import SeoUrl from "@/pages/design/seo-url";
 
 // Extensions
 import Extensions from "@/pages/extensions/extensions";
@@ -108,14 +121,25 @@ function App() {
                 <Route path="/catalog/downloads" component={() => <Downloads />} />
                 <Route path="/catalog/reviews" component={() => <Reviews />} />
                 <Route path="/catalog/information" component={() => <Information />} />
+                <Route path="/catalog/attributes" component={() => <Attributes />} />
+                <Route path="/catalog/options" component={() => <Options />} />
+                <Route path="/catalog/filters" component={() => <Filters />} />
+                <Route path="/catalog/recurring" component={() => <Recurring />} />
 
                 {/* Sales */}
                 <Route path="/sales/orders" component={() => <Orders />} />
                 <Route path="/sales/returns" component={() => <Returns />} />
                 <Route path="/sales/coupons" component={() => <Coupons />} />
+                <Route path="/sales/recurring-orders" component={() => <RecurringOrders />} />
+                <Route path="/sales/vouchers/vouchers" component={() => <Vouchers />} />
+                <Route path="/sales/vouchers/themes" component={() => <VoucherThemes />} />
 
                 {/* Customers */}
                 <Route path="/customers" component={() => <Customers />} />
+                <Route path="/customers/customers" component={() => <Customers />} />
+                <Route path="/customers/groups" component={() => <CustomerGroups />} />
+                <Route path="/customers/approvals" component={() => <CustomerApprovals />} />
+                <Route path="/customers/custom-fields" component={() => <CustomFields />} />
 
                 {/* Journal */}
                 <Route path="/journal/layouts" component={() => <JournalLayouts />} />
@@ -143,6 +167,9 @@ function App() {
                 {/* Design */}
                 <Route path="/design/layouts" component={() => <DesignLayouts />} />
                 <Route path="/design/theme-editor" component={() => <ThemeEditor />} />
+                <Route path="/design/language-editor" component={() => <LanguageEditor />} />
+                <Route path="/design/banners" component={() => <Banners />} />
+                <Route path="/design/seo-url" component={() => <SeoUrl />} />
 
                 {/* Extensions */}
                 <Route path="/extensions" component={() => <Extensions />} />
