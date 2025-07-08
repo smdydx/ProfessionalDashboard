@@ -1,6 +1,6 @@
 
 import { PageLayout } from "@/components/common/page-layout";
-import { DataTable } from "@/components/common/data-table";
+import DataTable from "@/components/common/data-table";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2 } from "lucide-react";
 

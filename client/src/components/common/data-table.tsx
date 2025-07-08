@@ -5,11 +5,14 @@ import { Search } from "lucide-react";
 
 interface DataTableProps {
   data: any[];
-  columns: string[];
+  columns: any[];
   searchable?: boolean;
+  onEdit?: (row: any) => void;
+  onDelete?: (row: any) => void;
+  isLoading?: boolean;
 }
 
-export function DataTable({ data, columns, searchable = true }: DataTableProps) {
+export default function DataTable({ data, columns, searchable = true, onEdit, onDelete, isLoading }: DataTableProps) {
   return (
     <div className="space-y-4">
       {searchable && (
@@ -23,7 +26,7 @@ export function DataTable({ data, columns, searchable = true }: DataTableProps) 
         <TableHeader>
           <TableRow>
             {columns.map((column) => (
-              <TableHead key={column}>{column}</TableHead>
+              <TableHead key={column.accessorKey || column.header}>{column.header}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -38,8 +41,8 @@ export function DataTable({ data, columns, searchable = true }: DataTableProps) 
             data.map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
-                  <TableCell key={column}>
-                    {row[column] || '-'}
+                  <TableCell key={column.accessorKey || column.header}>
+                    {column.cell ? column.cell({ row: { getValue: (key: string) => row[key] } }) : row[column.accessorKey] || '-'}
                   </TableCell>
                 ))}
               </TableRow>
