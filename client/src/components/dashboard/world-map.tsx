@@ -14,25 +14,22 @@ const markers = [
 
 export default function WorldMap() {
   return (
-    <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 rounded-lg shadow-2xl p-6 border border-blue-700/30">
+    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
       <div className="mb-6">
-        <h3 className="text-2xl font-bold text-white mb-2">Global Activity Map</h3>
-        <p className="text-blue-200">Real-time user activity across continents</p>
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">Global Activity Map</h3>
+        <p className="text-gray-600">Real-time user activity across continents</p>
       </div>
       
-      <div className="w-full h-96 relative bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 rounded-lg border border-blue-500/30 shadow-inner overflow-hidden">
-        {/* Ocean gradient background */}
-        <div className="absolute inset-0 bg-gradient-radial from-blue-400/20 via-blue-600/30 to-blue-900"></div>
-        
+      <div className="w-full h-96 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
         <ComposableMap
-          projection="geoNaturalEarth1"
+          projection="geoMercator"
           projectionConfig={{
-            scale: 160,
+            scale: 130,
             center: [0, 0]
           }}
           width={800}
           height={400}
-          className="w-full h-full relative z-10"
+          className="w-full h-full"
         >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
@@ -40,13 +37,10 @@ export default function WorldMap() {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#2d5016"
-                  stroke="#4a7c59"
-                  strokeWidth={0.5}
-                  className="hover:fill-green-600 transition-colors duration-300"
-                  style={{
-                    filter: "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))"
-                  }}
+                  fill="#93c5fd"
+                  stroke="#ffffff"
+                  strokeWidth={0.8}
+                  className="hover:fill-blue-400 transition-colors duration-200"
                 />
               ))
             }
@@ -56,46 +50,43 @@ export default function WorldMap() {
             <Marker key={name} coordinates={coordinates}>
               {/* Ripple effect */}
               <circle 
-                r={15} 
+                r={12} 
                 fill="none"
-                stroke="#fbbf24"
-                strokeWidth={2}
-                opacity={0.4}
+                stroke="#ef4444"
+                strokeWidth={1.5}
+                opacity={0.6}
                 className="animate-ping"
-                style={{ animationDelay: `${index * 0.8}s` }}
+                style={{ animationDelay: `${index * 0.5}s` }}
               />
               {/* Main city marker */}
               <circle 
-                r={6} 
-                fill="#f59e0b" 
-                stroke="#fff"
+                r={5} 
+                fill="#dc2626" 
+                stroke="#ffffff"
                 strokeWidth={2}
-                className="drop-shadow-lg"
               />
-              {/* Inner highlight */}
+              {/* Inner dot */}
               <circle 
-                r={3} 
-                fill="#fef3c7"
-                opacity={0.8}
+                r={2} 
+                fill="#ffffff"
+                opacity={0.9}
               />
               <text
                 textAnchor="middle"
-                y={-12}
-                className="text-xs font-semibold fill-white"
+                y={-10}
+                className="text-xs font-semibold fill-gray-800"
                 style={{ 
-                  fontSize: "10px",
-                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)"
+                  fontSize: "10px"
                 }}
               >
                 {name}
               </text>
               <text
                 textAnchor="middle"
-                y={25}
-                className="text-xs fill-yellow-200 font-medium"
+                y={20}
+                className="text-xs fill-gray-600 font-medium"
                 style={{ 
-                  fontSize: "8px",
-                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)"
+                  fontSize: "8px"
                 }}
               >
                 {value} users
@@ -107,17 +98,14 @@ export default function WorldMap() {
       
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
         {markers.map((marker, index) => (
-          <div key={marker.name} className="flex items-center space-x-3 p-3 bg-white/10 rounded-lg border border-blue-400/30 backdrop-blur-sm hover:bg-white/15 transition-colors">
+          <div key={marker.name} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
             <div className="relative">
-              <div className="w-4 h-4 bg-amber-400 rounded-full shadow-lg" 
-                   style={{ 
-                     boxShadow: "0 0 8px rgba(251, 191, 36, 0.6)"
-                   }}></div>
-              <div className="absolute inset-0 w-4 h-4 bg-amber-400 rounded-full animate-pulse opacity-60"></div>
+              <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+              <div className="absolute inset-0 w-4 h-4 bg-red-500 rounded-full animate-pulse opacity-60"></div>
             </div>
             <div>
-              <span className="text-sm font-bold text-white">{marker.name}</span>
-              <p className="text-xs text-amber-200">{marker.value} online</p>
+              <span className="text-sm font-semibold text-gray-800">{marker.name}</span>
+              <p className="text-xs text-gray-600">{marker.value} online</p>
             </div>
           </div>
         ))}
