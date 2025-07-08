@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { 
   Home, 
   Users, 
@@ -21,7 +22,8 @@ import {
   FileText,
   Tag,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Menu
 } from "lucide-react";
 
 interface SidebarProps {
