@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,80 +17,78 @@ interface PageLayoutProps {
   stats?: Array<{ label: string; value: string | number; variant?: "default" | "secondary" | "destructive" }>;
 }
 
-export function PageLayout({
+export default function PageLayout({
   title,
   description,
   children,
-  onAdd,
-  addButtonText = "Add New",
-  breadcrumb = [],
   actions,
   stats = [],
+  breadcrumb = [],
 }: PageLayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-      <div className="container mx-auto px-4 py-6 space-y-6">
-        {/* Breadcrumb */}
+    <div className="flex-1 space-y-4 sm:space-y-6 p-3 sm:p-4 lg:p-6">
+      <div className="space-y-3 sm:space-y-4">
+        {/* Breadcrumbs */}
         {breadcrumb.length > 0 && (
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard" className="flex items-center gap-1">
-                  <Home className="h-4 w-4" />
-                  Dashboard
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              {breadcrumb.map((item, index) => (
-                <React.Fragment key={index}>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    {item.href ? (
-                      <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                    ) : (
-                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                    )}
-                  </BreadcrumbItem>
-                </React.Fragment>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
+          <div className="overflow-x-auto">
+            <Breadcrumb>
+              <BreadcrumbList className="flex-nowrap">
+                {breadcrumb.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <BreadcrumbItem className="whitespace-nowrap">
+                      {item.href ? (
+                        <BreadcrumbLink href={item.href} className="text-xs sm:text-sm">
+                          {item.label}
+                        </BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage className="text-xs sm:text-sm">
+                          {item.label}
+                        </BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
+                    {index < breadcrumb.length - 1 && <BreadcrumbSeparator />}
+                  </React.Fragment>
+                ))}
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         )}
 
-        {/* Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+        {/* Page Header */}
+        <div className="header-responsive flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground truncate">
+              {title}
+            </h1>
             {description && (
-              <p className="text-gray-600">{description}</p>
+              <p className="text-muted-foreground mt-1 text-sm sm:text-base line-clamp-2">
+                {description}
+              </p>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            {actions}
-            <Button variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
-            {onAdd && (
-              <Button onClick={onAdd} size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                {addButtonText}
-              </Button>
-            )}
-          </div>
+          {actions && (
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              {actions}
+            </div>
+          )}
         </div>
 
         {/* Stats Cards */}
         {stats.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="dashboard-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {stats.map((stat, index) => (
-              <Card key={index} className="bg-white shadow-sm">
-                <CardContent className="p-4">
+              <Card key={index} className="card-responsive bg-card shadow-sm border-border hover:shadow-md transition-shadow">
+                <CardContent className="p-3 sm:p-4">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
+                        {stat.label}
+                      </p>
+                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mt-1">
+                        {stat.value}
+                      </p>
                     </div>
-                    <Badge variant={stat.variant || "default"}>
+                    <Badge variant={stat.variant || "default"} className="ml-2 shrink-0">
                       {stat.variant === "destructive" ? "Low" : "Active"}
                     </Badge>
                   </div>
@@ -101,10 +98,10 @@ export function PageLayout({
           </div>
         )}
 
-        <Separator />
+        <Separator className="my-4 sm:my-6" />
 
         {/* Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {children}
         </div>
       </div>

@@ -17,15 +17,19 @@ const data = [
 
 export default function WorldMapComponent() {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-      <div className="mb-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">Global Orders Map</h3>
-        <p className="text-gray-600">Order distribution across different countries</p>
+    <div className="bg-card rounded-lg shadow-lg p-3 sm:p-4 lg:p-6 border border-border">
+      <div className="mb-4 sm:mb-6">
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2">
+          Global Orders Map
+        </h3>
+        <p className="text-muted-foreground text-sm sm:text-base">
+          Order distribution across different countries
+        </p>
       </div>
 
-      <div className="w-full h-96 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden p-4">
+      <div className="chart-container w-full h-64 sm:h-80 lg:h-96 relative bg-muted rounded-lg border border-border overflow-hidden p-2 sm:p-3 lg:p-4">
         <WorldMap
-          color="blue"
+          color="hsl(var(--primary))"
           title="Orders by Country"
           value-suffix="orders"
           size="responsive"
@@ -35,9 +39,9 @@ export default function WorldMapComponent() {
               ? 0.1 + (1.5 * (context.countryValue - context.minValue) / (context.maxValue - context.minValue))
               : 0.1;
             return {
-              fill: context.countryValue ? "#3b82f6" : "#e5e7eb",
+              fill: context.countryValue ? "hsl(var(--primary))" : "hsl(var(--muted))",
               fillOpacity: opacityLevel,
-              stroke: "#ffffff",
+              stroke: "hsl(var(--background))",
               strokeWidth: 1,
               strokeOpacity: 0.8,
               cursor: "pointer"
@@ -46,16 +50,20 @@ export default function WorldMapComponent() {
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="mt-4 sm:mt-6 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
         {data.map((item, index) => (
-          <div key={item.country} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-            <div className="relative">
-              <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-              <div className="absolute inset-0 w-4 h-4 bg-blue-500 rounded-full animate-pulse opacity-60"></div>
+          <div key={item.country} className="flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 bg-muted rounded-lg border border-border hover:bg-accent transition-colors">
+            <div className="relative shrink-0">
+              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-primary rounded-full"></div>
+              <div className="absolute inset-0 w-3 h-3 sm:w-4 sm:h-4 bg-primary rounded-full animate-pulse opacity-60"></div>
             </div>
-            <div>
-              <span className="text-sm font-semibold text-gray-800 uppercase">{item.country}</span>
-              <p className="text-xs text-gray-600">{item.value} orders</p>
+            <div className="min-w-0 flex-1">
+              <span className="text-xs sm:text-sm font-semibold text-foreground uppercase block truncate">
+                {item.country}
+              </span>
+              <p className="text-xs text-muted-foreground">
+                {item.value} orders
+              </p>
             </div>
           </div>
         ))}
